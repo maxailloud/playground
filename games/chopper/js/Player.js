@@ -3,11 +3,13 @@ Player = function(game) {
     this.game    = game;
     this.sprite  = null;
     this.cursors = null;
+    this.music   = null;
 };
 
 Player.prototype = {
     preload: function() {
         this.game.load.spritesheet('chopper', 'assets/sprites/chopper.png', 52, 36, 5);
+        game.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
     },
 
     create: function() {
@@ -18,7 +20,10 @@ Player.prototype = {
 
         this.sprite.body.collideWorldBounds = true;
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors = this.game.input.keyboard.createCursorKeys()
+
+        this.music = this.game.add.audio('chopper_hovering', 1, true);
+        this.music.play('', 0, 0.2, true);
     },
 
     update: function() {
