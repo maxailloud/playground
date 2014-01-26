@@ -17,15 +17,11 @@ Level.prototype = {
         this.game.add.sprite(0, 0, 'background');
         this.map     = this.game.add.tilemap('ground');
         this.tileset = this.game.add.tileset('tiles');
+        this.tileset.setCollisionRange(0, 9, true, true, true, true);
 
         this.layer = this.game.add.tilemapLayer(0, 0, 720, 384, this.tileset, this.map, 0);
-        this.layer.resizeWorld();
     },
 
     update: function() {
-    },
-
-    render: function() {
-        this.game.debug.renderText('Click to pouet', 32, 32);
     }
 };
