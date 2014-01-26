@@ -1,4 +1,4 @@
-var game = new Phaser.Game(720, 384, Phaser.AUTO, 'canvas-container', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 400, Phaser.CANVAS, 'canvas-container', { preload: preload, create: create, update: update, render: render });
 
 var player = null;
 var level = null;
@@ -18,4 +18,9 @@ function create()
 function update()
 {
     level.update();
+}
+
+function render()
+{
+    level.render();
 }
