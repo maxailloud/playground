@@ -8,7 +8,6 @@ Player = function(game) {
 Player.prototype = {
     preload: function() {
         this.game.load.spritesheet('chopper', 'assets/sprites/chopper.png', 52, 36, 5);
-        this.game.load.spritesheet('mummy', 'assets/sprites/metalslug_mummy37x45.png', 37, 45, 18);
     },
 
     create: function() {
