@@ -13,20 +13,23 @@ function preload()
 
     player = new Player(game);
     player.preload();
+
+    hud = new HUD(game);
+    hud.preload();
 }
 
 function create()
 {
     level.create();
     player.create();
-
-    button = game.add.button(game.world.centerX - 95, 400, 'button', muteSound, this, 2, 1, 0);
+    hud.create();
 }
 
 function update()
 {
     level.update();
     player.update();
+    hud.update();
 }
 
 function render()
@@ -34,13 +37,4 @@ function render()
     game.debug.renderText("x : " + game.input.mousePointer.x, 32, 410);
     game.debug.renderText("y : " + game.input.mousePointer.y, 32, 430);
     game.debug.renderText("Sound " + !game.sound._muted, 150, 410);
-}
-
-function muteSound () {
-    if (game.sound._muted) {
-        game.sound.mute = false;
-    }
-    else {
-        game.sound.mute = true;
-    }
 }
