@@ -9,8 +9,6 @@ Player = function(game, level) {
 
 Player.prototype = {
     preload: function() {
-        this.game.load.spritesheet('chopper', 'assets/sprites/chopper.png', 52, 36, 5);
-        this.game.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
     },
 
     create: function() {
