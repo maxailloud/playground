@@ -42,11 +42,11 @@ HUD.prototype = {
     {
         if (this.game.sound._muted) {
             this.game.sound.mute   = false;
-            this.soundToggle.loadTexture('sound_on', 0);
+//            this.soundToggle.loadTexture('sound_on', 0);
         }
         else {
             this.game.sound.mute   = true;
-            this.soundToggle.loadTexture('sound_off', 0);
+//            this.soundToggle.loadTexture('sound_off', 0);
         }
     }
 };
