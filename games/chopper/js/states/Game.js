@@ -50,13 +50,12 @@ Chopper.Game.prototype = {
     },
 
     render: function() {
+        this.level.render();
+        this.hud.render()
 
         this.game.debug.renderText("x : " + this.game.input.mousePointer.x, 32, 410);
         this.game.debug.renderText("y : " + this.game.input.mousePointer.y, 32, 430);
         this.game.debug.renderText("Sound " + !this.game.sound._muted, 150, 410);
-
-        this.level.render();
-        this.hud.render();
     },
 
     quitGame: function(pointer) {
