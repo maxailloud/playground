@@ -23,5 +23,8 @@ Level.prototype = {
     },
 
     update: function() {
+    },
+
+    render: function() {
     }
 };

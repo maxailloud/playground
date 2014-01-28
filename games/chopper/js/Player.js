@@ -49,5 +49,8 @@ Player.prototype = {
         {
             this.sprite.body.velocity.y = 250;
         }
+    },
+
+    render: function() {
     }
 };

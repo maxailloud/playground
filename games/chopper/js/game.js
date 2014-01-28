@@ -37,4 +37,8 @@ function render()
     game.debug.renderText("x : " + game.input.mousePointer.x, 32, 410);
     game.debug.renderText("y : " + game.input.mousePointer.y, 32, 430);
     game.debug.renderText("Sound " + !game.sound._muted, 150, 410);
+
+    level.render();
+    player.render();
+    hud.render();
 }
