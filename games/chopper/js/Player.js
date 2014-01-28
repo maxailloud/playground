@@ -1,6 +1,7 @@
-Player = function(game) {
+Player = function(game, level) {
 
     this.game    = game;
+    this.level   = level;
     this.sprite  = null;
     this.cursors = null;
     this.music   = null;
@@ -9,7 +10,7 @@ Player = function(game) {
 Player.prototype = {
     preload: function() {
         this.game.load.spritesheet('chopper', 'assets/sprites/chopper.png', 52, 36, 5);
-        game.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
+        this.game.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
     },
 
     create: function() {
@@ -27,7 +28,7 @@ Player.prototype = {
     },
 
     update: function() {
-        this.game.physics.collide(this.sprite, level.layer);
+        this.game.physics.collide(this.sprite, this.level.layer);
 
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;

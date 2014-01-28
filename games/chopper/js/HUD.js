@@ -12,7 +12,7 @@ HUD.prototype = {
     },
 
     create: function() {
-        this.soundToggle = this.game.add.button(game.world.width - 150, 15, 'button', this.muteSound, this, 0, 1, 0);
+        this.soundToggle = this.game.add.button(this.game.world.width - 150, 15, 'button', this.muteSound, this, 0, 1, 0);
 
 //        this.soundToggle = game.add.sprite(game.world.width - 150, 15, 'sound_on');
 //        this.soundToggle.inputEnabled=true;

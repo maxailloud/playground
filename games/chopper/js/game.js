@@ -12,7 +12,7 @@ window.onload = function() {
         level = new Level(game);
         level.preload();
 
-        player = new Player(game);
+        player = new Player(game, level);
         player.preload();
 
         hud = new HUD(game);
