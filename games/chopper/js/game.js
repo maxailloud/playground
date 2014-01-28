@@ -39,6 +39,5 @@ function render()
     game.debug.renderText("Sound " + !game.sound._muted, 150, 410);
 
     level.render();
-    player.render();
     hud.render();
 }
