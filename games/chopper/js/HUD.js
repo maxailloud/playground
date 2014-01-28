@@ -12,7 +12,7 @@ HUD.prototype = {
     },
 
     create: function() {
-        this.soundToggle = this.game.add.button(this.game.world.width - 150, 15, 'button', this.muteSound, this, 0, 1, 0);
+        this.soundToggle = this.game.add.button(this.game.world.width - 150, 15, 'button', this.toggleSound, this, 0, 1, 0);
 
 //        this.soundToggle = game.add.sprite(game.world.width - 150, 15, 'sound_on');
 //        this.soundToggle.inputEnabled=true;
@@ -38,7 +38,7 @@ HUD.prototype = {
         this.game.stage.canvas.style.cursor = "default";
     },
 
-    muteSound: function()
+    toggleSound: function()
     {
         if (this.game.sound._muted) {
             this.game.sound.mute   = false;
