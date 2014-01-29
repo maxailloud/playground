@@ -11,7 +11,7 @@ HUD.prototype = {
     },
 
     create: function() {
-        this.soundToggle = this.game.add.button(this.game.world.width - 150, 15, 'button', this.toggleSound, this);
+        this.soundToggle = this.game.add.button(this.game.world.width - 30, 15, 'button', this.toggleSound, this);
         this.soundToggle.frame = 1;
 
         this.game.onPause.add(this.onGamePause, this);
