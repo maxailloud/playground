@@ -1,9 +1,12 @@
 Player = function(game) {
 
-    this.game    = game;
-    this.sprite  = null;
-    this.cursors = null;
-    this.music   = null;
+    this.game     = game;
+    this.sprite   = null;
+    this.cursors  = null;
+    this.music    = null;
+    this.missile  = null;
+    this.missiles = null;
+    this.fireTime = 0;
 };
 
 Player.prototype = {
@@ -18,10 +21,15 @@ Player.prototype = {
 
         this.sprite.body.collideWorldBounds = true;
 
-        this.cursors = this.game.input.keyboard.createCursorKeys()
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
 
         this.music = this.game.add.audio('chopper_hovering', 1, true);
         this.music.play('', 0, 0.2, true);
+
+        this.missiles = this.game.add.group();
+        this.missiles.createMultiple(10, 'missile');
+        this.missiles.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', this.resetMissile, this);
     },
 
     update: function() {
@@ -45,8 +53,31 @@ Player.prototype = {
         {
             this.sprite.body.velocity.y = 250;
         }
+
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+        {
+            this.fire();
+        }
     },
 
     render: function() {
+    },
+
+    fire: function() {
+        if (this.game.time.now > this.fireTime)
+        {
+            this.missile = this.missiles.getFirstExists(false);
+
+            if (this.missile)
+            {
+                this.missile.reset(this.sprite.x + 25, this.sprite.y + 25);
+                this.missile.body.velocity.x = +300;
+                this.fireTime = this.game.time.now + 300;
+            }
+        }
+    },
+
+    resetMissile: function(missile) {
+        missile.kill();
     }
 };

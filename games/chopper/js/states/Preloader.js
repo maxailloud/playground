@@ -18,6 +18,7 @@ Chopper.Preloader.prototype = {
         //Player
         this.load.spritesheet('chopper', 'assets/sprites/chopper.png', 52, 36, 5);
         this.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
+        this.load.image('missile', 'assets/sprites/shell.gif');
 
         //MainLenu
         this.load.spritesheet('playButton', 'assets/interface/button_sprite_sheet.png', 193, 71);
