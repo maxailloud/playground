@@ -11,9 +11,6 @@ Chopper.Boot.prototype = {
     },
 
     create: function() {
-        this.game.onPause.add(this.onGamePause, this);
-        this.game.onResume.add(this.onGameResume, this);
-
         this.game.input.maxPointers = 1;
 
         if(this.game.device.desktop)
@@ -38,13 +35,5 @@ Chopper.Boot.prototype = {
         //By this point the preloader assets have loaded to the cache, we've set the game settings
         //So now let's start the real preloader going
         this.game.state.start('Preloader');
-    },
-
-    onGamePause: function() {
-        this.game.sound.mute = true;
-    },
-
-    onGameResume: function() {
-        this.game.sound.mute = false;
     }
 };

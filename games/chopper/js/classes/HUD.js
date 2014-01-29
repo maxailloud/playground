@@ -2,6 +2,7 @@ HUD = function(game) {
 
     this.game        = game;
     this.soundToggle = null;
+    this.soundMuted  = false;
 };
 
 HUD.prototype = {
@@ -12,6 +13,9 @@ HUD.prototype = {
     create: function() {
         this.soundToggle = this.game.add.button(this.game.world.width - 150, 15, 'button', this.toggleSound, this);
         this.soundToggle.frame = 1;
+
+        this.game.onPause.add(this.onGamePause, this);
+        this.game.onResume.add(this.onGameResume, this);
     },
 
     update: function() {
@@ -25,11 +29,23 @@ HUD.prototype = {
     {
         if (this.game.sound._muted) {
             this.game.sound.mute   = false;
+            this.soundMuted        = false;
             this.soundToggle.frame = 1;
         }
         else {
             this.game.sound.mute   = true;
+            this.soundMuted        = true;
             this.soundToggle.frame = 0;
+        }
+    },
+
+    onGamePause: function() {
+        this.game.sound.mute = true;
+    },
+
+    onGameResume: function() {
+        if (!this.soundMuted) {
+            this.game.sound.mute = false;
         }
     }
 };

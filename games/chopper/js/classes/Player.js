@@ -1,7 +1,6 @@
-Player = function(game, level) {
+Player = function(game) {
 
     this.game    = game;
-    this.level   = level;
     this.sprite  = null;
     this.cursors = null;
     this.music   = null;
@@ -26,8 +25,6 @@ Player.prototype = {
     },
 
     update: function() {
-        this.game.physics.collide(this.sprite, this.level.layer);
-
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;
 

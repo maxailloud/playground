@@ -19,9 +19,9 @@ Chopper.Game = function(game) {
     //You can use any of these from any function within this State.
     //But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
-    this.player = null;
-    this.level  = null;
-    this.hud    = null;
+    this.player     = null;
+    this.level      = null;
+    this.hud        = null;
 };
 
 Chopper.Game.prototype = {
@@ -30,7 +30,7 @@ Chopper.Game.prototype = {
         this.level = new Level(this.game);
         this.level.preload();
 
-        this.player = new Player(this.game, this.level);
+        this.player = new Player(this.game);
         this.player.preload();
 
         this.hud = new HUD(this.game);
@@ -47,10 +47,13 @@ Chopper.Game.prototype = {
         this.level.update();
         this.player.update();
         this.hud.update();
+
+        this.game.physics.collide(this.player.sprite, this.level.layer);
     },
 
     render: function() {
         this.level.render();
+        this.player.render();
         this.hud.render()
 
         this.game.debug.renderText("x : " + this.game.input.mousePointer.x, 32, 410);
@@ -59,9 +62,7 @@ Chopper.Game.prototype = {
     },
 
     quitGame: function(pointer) {
-
         this.game.state.start('MainMenu');
-
     }
 
 };
