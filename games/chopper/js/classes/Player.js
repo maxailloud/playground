@@ -1,18 +1,16 @@
 Player = function(game) {
 
     this.game     = game;
-    this.sprite   = null;
-    this.cursors  = null;
-    this.music    = null;
-    this.missile  = null;
-    this.missiles = null;
+    this.sprite ;
+    this.cursors;
+    this.music;
+    this.missile;
+    this.missiles;
+    this.fireRate = 300;
     this.fireTime = 0;
 };
 
 Player.prototype = {
-    preload: function() {
-    },
-
     create: function() {
         this.sprite = this.game.add.sprite(32, 100, 'chopper');
 
@@ -22,7 +20,6 @@ Player.prototype = {
         this.sprite.body.collideWorldBounds = true;
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
-        this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
 
         this.music = this.game.add.audio('chopper_hovering', 1, true);
         this.music.play('', 0, 0.2, true);
@@ -72,7 +69,8 @@ Player.prototype = {
             {
                 this.missile.reset(this.sprite.x + 25, this.sprite.y + 25);
                 this.missile.body.velocity.x = +300;
-                this.fireTime = this.game.time.now + 300;
+
+                this.fireTime = this.game.time.now + this.fireRate;
             }
         }
     },

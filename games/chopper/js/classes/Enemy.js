@@ -1,0 +1,96 @@
+Enemy = function(game) {
+
+    this.game = game;
+    this.tankSprite;
+    this.turretSprite;
+    this.upKey;
+    this.downKey;
+    this.leftKey;
+    this.rightKey;
+    this.fireKey;
+    this.turretMaxAngle = -40;
+    this.turretMinAngle = 0;
+    this.bullet;
+    this.bullets;
+    this.firerate = 700;
+    this.fireTime = 0;
+
+    this.circle;
+};
+
+Enemy.prototype = {
+    create: function() {
+        this.turretSprite = this.game.add.sprite(10, 250, 'enemyTankTurret');
+
+        this.tankSprite = this.game.add.sprite(10, 250, 'enemyTank');
+        this.tankSprite.body.gravity.y = 6;
+
+        this.tankSprite.body.collideWorldBounds = true;
+
+        this.upKey   = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_8);
+        this.downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
+        this.leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_4);
+        this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_6);
+        this.fireKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_ADD);
+
+        this.bullets = this.game.add.group();
+        this.bullets.createMultiple(10, 'missile');
+        this.bullets.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', this.resetBullet, this);
+    },
+
+    update: function(playerPosition) {
+        this.tankSprite.body.velocity.x = 0;
+
+        if (this.upKey.isDown)
+        {
+            if (this.turretMaxAngle <= this.turretSprite.angle - 1) {
+                this.turretSprite.angle -= 1;
+            }
+        }
+        else if (this.downKey.isDown)
+        {
+            if (this.turretMinAngle > this.turretSprite.angle + 1) {
+                this.turretSprite.angle += 1;
+            }
+        }
+
+        if (this.leftKey.isDown)
+        {
+            this.tankSprite.body.velocity.x = -100;
+        }
+        else if (this.rightKey.isDown)
+        {
+            this.tankSprite.body.velocity.x = 100;
+        }
+
+        this.turretSprite.x = this.tankSprite.x + 21;
+        this.turretSprite.y = this.tankSprite.y + 6;
+
+        if (this.fireKey.isDown)
+        {
+            this.fire();
+        }
+    },
+
+    render: function() {
+    },
+
+    fire: function() {
+        if (this.game.time.now > this.fireTime)
+        {
+            this.bullet = this.bullets.getFirstExists(false);
+
+            if (this.bullet)
+            {
+                this.bullet.reset(this.turretSprite.x + 25, this.turretSprite.y);
+                this.bullet.body.velocity.x = +300;
+
+                this.fireTime = this.game.time.now + this.firerate;
+            }
+        }
+    },
+
+    resetBullet: function(bullet) {
+        bullet.kill();
+    }
+};

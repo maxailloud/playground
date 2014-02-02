@@ -19,45 +19,45 @@ Chopper.Game = function(game) {
     //You can use any of these from any function within this State.
     //But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
-    this.player     = null;
-    this.level      = null;
-    this.hud        = null;
+    this.enemy;
+    this.player;
+    this.level;
+    this.hud;
 };
 
 Chopper.Game.prototype = {
 
     preload: function() {
-        this.level = new Level(this.game);
-        this.level.preload();
-
+        this.level  = new Level(this.game);
         this.player = new Player(this.game);
-        this.player.preload();
-
-        this.hud = new HUD(this.game);
-        this.hud.preload();
+        this.enemy  = new Enemy(this.game);
+        this.hud    = new HUD(this.game);
     },
 
     create: function() {
         this.level.create();
         this.player.create();
+        this.enemy.create();
         this.hud.create();
     },
 
     update: function() {
         this.level.update();
         this.player.update();
+        this.enemy.update(this.player.sprite);
         this.hud.update();
 
         this.game.physics.collide(this.player.sprite, this.level.layer);
+        this.game.physics.collide(this.enemy.tankSprite, this.level.layer);
     },
 
     render: function() {
         this.level.render();
         this.player.render();
+        this.enemy.render();
         this.hud.render()
 
-        this.game.debug.renderText("x : " + this.game.input.mousePointer.x, 32, 410);
-        this.game.debug.renderText("y : " + this.game.input.mousePointer.y, 32, 430);
+        this.game.debug.renderInputInfo(32,410);
         this.game.debug.renderText("Sound " + !this.game.sound._muted, 150, 410);
     },
 

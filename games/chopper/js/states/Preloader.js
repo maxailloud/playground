@@ -20,13 +20,20 @@ Chopper.Preloader.prototype = {
         this.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
         this.load.image('missile', 'assets/sprites/shell.gif');
 
-        //MainLenu
+        //MainMenu
         this.load.spritesheet('playButton', 'assets/interface/button_sprite_sheet.png', 193, 71);
 
         //Level
         this.load.image('background', 'assets/sprites/background.jpg');
         this.load.tilemap('ground', 'assets/maps/ground.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.tileset('tiles', 'assets/tiles/tileset.gif', 48, 48);
+
+        //HUD
+        this.game.load.spritesheet('button', 'assets/interface/sound.png', 16, 16);
+
+        //Enemy
+        this.game.load.image('enemyTank', 'assets/sprites/tank.gif');
+        this.game.load.image('enemyTankTurret', 'assets/sprites/gun.gif');
     },
 
     create: function() {

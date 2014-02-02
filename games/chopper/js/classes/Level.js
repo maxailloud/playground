@@ -7,12 +7,6 @@ Level = function(game) {
 };
 
 Level.prototype = {
-    preload: function() {
-        this.game.load.image('background', 'assets/sprites/background.jpg');
-        this.game.load.tilemap('ground', 'assets/maps/ground.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.tileset('tiles', 'assets/tiles/tileset.gif', 48, 48);
-    },
-
     create: function() {
         this.game.add.sprite(0, 0, 'background');
         this.map     = this.game.add.tilemap('ground');

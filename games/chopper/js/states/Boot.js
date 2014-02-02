@@ -11,6 +11,8 @@ Chopper.Boot.prototype = {
     },
 
     create: function() {
+        this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
+
         this.game.input.maxPointers = 1;
 
         if(this.game.device.desktop)
