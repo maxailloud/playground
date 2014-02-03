@@ -82,8 +82,9 @@ Enemy.prototype = {
 
             if (this.bullet)
             {
-                this.bullet.reset(this.turretSprite.x + 25, this.turretSprite.y);
-                this.bullet.body.velocity.x = +300;
+                this.bullet.reset(this.turretSprite.x, this.turretSprite.y);
+                this.bullet.angle = this.turretSprite.angle;
+                this.game.physics.velocityFromAngle(this.bullet.angle, 150, this.bullet.body.velocity);
 
                 this.fireTime = this.game.time.now + this.firerate;
             }
