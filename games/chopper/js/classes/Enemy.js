@@ -20,6 +20,10 @@ Enemy = function(game) {
 
 Enemy.prototype = {
     create: function() {
+        this.bullets = this.game.add.group();
+        this.bullets.createMultiple(10, 'missile');
+        this.bullets.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', this.resetBullet, this);
+
         this.turretSprite = this.game.add.sprite(10, 250, 'enemyTankTurret');
 
         this.tankSprite = this.game.add.sprite(10, 250, 'enemyTank');
@@ -32,10 +36,6 @@ Enemy.prototype = {
         this.leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_4);
         this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_6);
         this.fireKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_ADD);
-
-        this.bullets = this.game.add.group();
-        this.bullets.createMultiple(10, 'missile');
-        this.bullets.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', this.resetBullet, this);
     },
 
     update: function(playerPosition) {
