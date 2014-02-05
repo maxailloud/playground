@@ -1,10 +1,12 @@
 Player = function(game) {
 
     this.game     = game;
-    this.sprite ;
+    this.sprite;
+    this.velocity = 200;
     this.cursors;
     this.music;
     this.missile;
+    this.missileVelocity = 400;
     this.missiles;
     this.fireRate = 300;
     this.fireTime = 0;
@@ -35,20 +37,20 @@ Player.prototype = {
 
         if(this.cursors.left.isDown)
         {
-            this.sprite.body.velocity.x = -250;
+            this.sprite.body.velocity.x = -this.velocity;
         }
         else if(this.cursors.right.isDown)
         {
-            this.sprite.body.velocity.x = 250;
+            this.sprite.body.velocity.x = this.velocity;
         }
 
         if(this.cursors.up.isDown)
         {
-            this.sprite.body.velocity.y = -250;
+            this.sprite.body.velocity.y = -this.velocity;
         }
         else if(this.cursors.down.isDown)
         {
-            this.sprite.body.velocity.y = 250;
+            this.sprite.body.velocity.y = this.velocity;
         }
 
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
@@ -68,7 +70,7 @@ Player.prototype = {
             if (this.missile)
             {
                 this.missile.reset(this.sprite.x + 25, this.sprite.y + 25);
-                this.missile.body.velocity.x = +300;
+                this.missile.body.velocity.x = +this.missileVelocity;
 
                 this.fireTime = this.game.time.now + this.fireRate;
             }

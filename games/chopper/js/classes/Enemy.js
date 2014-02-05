@@ -3,6 +3,7 @@ Enemy = function(game) {
     this.game = game;
     this.tankSprite;
     this.turretSprite;
+    this.velocity = 100;
     this.upKey;
     this.downKey;
     this.leftKey;
@@ -11,6 +12,7 @@ Enemy = function(game) {
     this.turretMaxAngle = -40;
     this.turretMinAngle = 0;
     this.bullet;
+    this.bulletVelocity = 250;
     this.bullets;
     this.firerate = 700;
     this.fireTime = 0;
@@ -31,11 +33,11 @@ Enemy.prototype = {
 
         this.tankSprite.body.collideWorldBounds = true;
 
-        this.upKey   = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_8);
-        this.downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
-        this.leftKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_4);
+        this.upKey    = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_8);
+        this.downKey  = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
+        this.leftKey  = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_4);
         this.rightKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_6);
-        this.fireKey = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_ADD);
+        this.fireKey  = this.game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_ADD);
     },
 
     update: function(playerPosition) {
@@ -56,11 +58,11 @@ Enemy.prototype = {
 
         if (this.leftKey.isDown)
         {
-            this.tankSprite.body.velocity.x = -100;
+            this.tankSprite.body.velocity.x = -this.velocity;
         }
         else if (this.rightKey.isDown)
         {
-            this.tankSprite.body.velocity.x = 100;
+            this.tankSprite.body.velocity.x = this.velocity;
         }
 
         this.turretSprite.x = this.tankSprite.x + 21;
@@ -84,7 +86,7 @@ Enemy.prototype = {
             {
                 this.bullet.reset(this.turretSprite.x, this.turretSprite.y);
                 this.bullet.angle = this.turretSprite.angle;
-                this.game.physics.velocityFromAngle(this.bullet.angle, 150, this.bullet.body.velocity);
+                this.game.physics.velocityFromAngle(this.bullet.angle, this.bulletVelocity, this.bullet.body.velocity);
 
                 this.fireTime = this.game.time.now + this.firerate;
             }
