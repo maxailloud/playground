@@ -1,6 +1,6 @@
 window.onload = function() {
-    var game = new Phaser.Game(720, 500, Phaser.CANVAS, 'canvas-container');
-//    var game = new Phaser.Game(720, 384, Phaser.AUTO, 'canvas-container');
+    var game = new Phaser.Game(2160, 500, Phaser.CANVAS, 'canvas-container');
+//    var game = new Phaser.Game(2160, 384, Phaser.AUTO, 'canvas-container');
 
     game.state.add('Boot',      Chopper.Boot);
     game.state.add('Preloader', Chopper.Preloader);
