@@ -9,13 +9,11 @@ Level = function(game) {
 Level.prototype = {
     create: function() {
         this.game.add.sprite(0, 0, 'background');
-        this.game.add.sprite(720, 0, 'background');
-        this.game.add.sprite(1440, 0, 'background');
         this.map     = this.game.add.tilemap('ground');
         this.tileset = this.game.add.tileset('tiles');
         this.tileset.setCollisionRange(0, 9, true, true, true, true);
 
-        this.layer = this.game.add.tilemapLayer(0, 0, 2160, 384, this.tileset, this.map, 0);
+        this.layer = this.game.add.tilemapLayer(0, 0, 720, 384, this.tileset, this.map, 0);
     },
 
     update: function() {

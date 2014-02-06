@@ -5,8 +5,6 @@ Chopper.MainMenu.prototype = {
 
     create: function() {
         this.game.add.sprite(0, 0, 'background');
-        this.game.add.sprite(720, 0, 'background');
-        this.game.add.sprite(1440, 0, 'background');
 
         var text  = "Click to start";
         var style = { font: "22px Arial", fill: "white", align: "center" };

@@ -39,6 +39,8 @@ Chopper.Game.prototype = {
         this.player.create();
         this.enemy.create();
         this.hud.create();
+
+        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_LOCKON);
     },
 
     update: function() {
@@ -47,8 +49,8 @@ Chopper.Game.prototype = {
         this.enemy.update(this.player.sprite);
         this.hud.update();
 
-        this.game.physics.collide(this.player.sprite, this.level.layer);
-        this.game.physics.collide(this.enemy.tankSprite, this.level.layer);
+        this.physics.collide(this.player.sprite, this.level.layer);
+        this.physics.collide(this.enemy.tankSprite, this.level.layer);
     },
 
     render: function() {
@@ -58,11 +60,12 @@ Chopper.Game.prototype = {
         this.hud.render()
 
         this.game.debug.renderInputInfo(32,410);
-        this.game.debug.renderText("Sound " + !this.game.sound._muted, 150, 410);
+        this.game.debug.renderText("Sound " + !this.sound._muted, 150, 410);
+        this.game.debug.renderCameraInfo(this.camera, 300, 410);
     },
 
     quitGame: function(pointer) {
-        this.game.state.start('MainMenu');
+        this.state.start('MainMenu');
     }
 
 };
