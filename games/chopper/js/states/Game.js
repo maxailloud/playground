@@ -62,6 +62,9 @@ Chopper.Game.prototype = {
         this.game.debug.renderInputInfo(32,410);
         this.game.debug.renderText("Sound " + !this.sound._muted, 150, 410);
         this.game.debug.renderCameraInfo(this.camera, 300, 410);
+
+        this.game.debug.renderPhysicsBody(this.player.sprite.body);
+        this.game.debug.renderPhysicsBody(this.enemy.tankSprite.body);
     },
 
     quitGame: function(pointer) {
