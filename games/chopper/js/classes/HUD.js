@@ -7,7 +7,8 @@ Chopper.HUD = function(game) {
 
 Chopper.HUD.prototype = {
     create: function() {
-        this.soundToggle = this.game.add.button(this.game.world.width - 30, 15, 'button', this.toggleSound, this);
+        this.soundToggle = this.game.add.button(this.game.width - 30, 15, 'button', this.toggleSound, this);
+        this.soundToggle.fixedToCamera = true;
         this.muteSound();
 
         this.game.onPause.add(this.onGamePause, this);
