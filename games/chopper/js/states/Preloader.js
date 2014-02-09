@@ -26,7 +26,7 @@ Chopper.Preloader.prototype = {
         //Level
         this.load.image('background', 'assets/sprites/background.jpg');
         this.load.tilemap('ground', 'assets/maps/ground.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.tileset('tiles', 'assets/tiles/tileset.gif', 48, 48);
+        this.load.image('tiles', 'assets/tiles/tileset.gif');
 
         //HUD
         this.game.load.spritesheet('button', 'assets/interface/sound.png', 16, 16);
