@@ -1,11 +1,11 @@
-Level = function(game) {
+Chopper.Level = function(game) {
 
     this.game    = game;
     this.map     = null;
     this.layer   = null;
 };
 
-Level.prototype = {
+Chopper.Level.prototype = {
     create: function() {
         this.game.add.sprite(0, 0, 'background');
         this.game.add.sprite(720, 0, 'background');

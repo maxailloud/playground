@@ -1,4 +1,4 @@
-Player = function(game) {
+Chopper.Player = function(game) {
 
     this.game     = game;
     this.sprite;
@@ -12,7 +12,7 @@ Player = function(game) {
     this.fireTime = 0;
 };
 
-Player.prototype = {
+Chopper.Player.prototype = {
     create: function() {
         this.sprite = this.game.add.sprite(32, 100, 'chopper');
 

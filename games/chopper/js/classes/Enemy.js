@@ -1,4 +1,4 @@
-Enemy = function(game) {
+Chopper.Enemy = function(game) {
 
     this.game = game;
     this.tankSprite;
@@ -20,7 +20,7 @@ Enemy = function(game) {
     this.circle;
 };
 
-Enemy.prototype = {
+Chopper.Enemy.prototype = {
     create: function() {
         this.bullets = this.game.add.group();
         this.bullets.createMultiple(10, 'missile');

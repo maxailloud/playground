@@ -1,11 +1,11 @@
-HUD = function(game) {
+Chopper.HUD = function(game) {
 
     this.game        = game;
     this.soundToggle = null;
     this.soundMuted  = false;
 };
 
-HUD.prototype = {
+Chopper.HUD.prototype = {
     create: function() {
         this.soundToggle = this.game.add.button(this.game.world.width - 30, 15, 'button', this.toggleSound, this);
         this.muteSound();

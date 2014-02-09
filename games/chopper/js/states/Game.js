@@ -28,10 +28,10 @@ Chopper.Game = function(game) {
 Chopper.Game.prototype = {
 
     preload: function() {
-        this.level  = new Level(this.game);
-        this.player = new Player(this.game);
-        this.enemy  = new Enemy(this.game);
-        this.hud    = new HUD(this.game);
+        this.level  = new Chopper.Level(this.game);
+        this.player = new Chopper.Player(this.game);
+        this.enemy  = new Chopper.Enemy(this.game);
+        this.hud    = new Chopper.HUD(this.game);
     },
 
     create: function() {
