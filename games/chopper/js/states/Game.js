@@ -40,7 +40,7 @@ Chopper.Game.prototype = {
         this.enemy.create();
         this.hud.create();
 
-        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_LOCKON);
+        this.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
     },
 
     update: function() {
