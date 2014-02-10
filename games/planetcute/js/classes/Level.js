@@ -12,6 +12,12 @@ PlanetCute.Level.prototype = {
             .fillRect(0, 0, this.game.width, this.game.height);
 
         var background = this.game.add.sprite(0, 0, gradientBackground);
+
+        var wood_Block = this.game.add.sprite(101, 171, 'world');
+        wood_Block.frameName = 'wood_block';
+
+        var wood_Block = this.game.add.sprite(101, 171, 'object');
+        wood_Block.frameName = 'character_boy';
     },
 
     update: function() {

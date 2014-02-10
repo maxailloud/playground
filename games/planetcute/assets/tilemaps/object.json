@@ -1,43 +1,131 @@
 {
     "frames": [
         {
-            "filename": "Brown Block.png",
-            "frame": {"x":234,"y":105,"w":101,"h":121},
-            "rotated": true,
-            "trimmed": true,
-            "spriteSourceSize": {"x":0,"y":50,"w":101,"h":121},
+            "filename": "character_boy",
+            "frame": {"x":0,"y":0,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":101,"h":171},
             "sourceSize": {"w":101,"h":171}
         },
         {
-            "filename": "wood_block",
-            "frame": {"x":952,"y":198,"w":67,"h":89},
+            "filename": "character_cat_girl",
+            "frame": {"x":101,"y":0,"w":101,"h":171},
             "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {"x":17,"y":62,"w":67,"h":89},
+            "trimmed": false,
+            "spriteSourceSize": {"x":101,"y":0,"w":101,"h":171},
             "sourceSize": {"w":101,"h":171}
         },
         {
-            "filename": "grass_block",
-            "frame": {"x":952,"y":105,"w":69,"h":91},
+            "filename": "character_horn_girl",
+            "frame": {"x":202,"y":0,"w":101,"h":171},
             "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {"x":16,"y":60,"w":69,"h":91},
+            "trimmed": false,
+            "spriteSourceSize": {"x":202,"y":0,"w":101,"h":171},
             "sourceSize": {"w":101,"h":171}
         },
         {
-            "filename": "water_block",
-            "frame": {"x":335,"y":943,"w":77,"h":91},
+            "filename": "character_pink_girl",
+            "frame": {"x":303,"y":0,"w":101,"h":171},
             "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {"x":7,"y":60,"w":77,"h":91},
+            "trimmed": false,
+            "spriteSourceSize": {"x":303,"y":0,"w":101,"h":171},
             "sourceSize": {"w":101,"h":171}
         },
         {
-            "filename": "brown_block",
-            "frame": {"x":428,"y":937,"w":77,"h":89},
+            "filename": "character_princess_girl",
+            "frame": {"x":404,"y":0,"w":101,"h":171},
             "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {"x":12,"y":62,"w":77,"h":89},
+            "trimmed": false,
+            "spriteSourceSize": {"x":404,"y":0,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "chest_closed",
+            "frame": {"x":505,"y":0,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":505,"y":0,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "chest_Lid",
+            "frame": {"x":606,"y":0,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":606,"y":0,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "chest_open",
+            "frame": {"x":707,"y":0,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":707,"y":0,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "gem_blue",
+            "frame": {"x":0,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":171,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "enemy_bug",
+            "frame": {"x":101,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":101,"y":171,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "gem_green",
+            "frame": {"x":202,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":202,"y":171,"w":101,"h":171},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "gem_orange",
+            "frame": {"x":303,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":303,"y":171,"w":101,"h":171},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "heart",
+            "frame": {"x":404,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":404,"y":171,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "key",
+            "frame": {"x":505,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":505,"y":171,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "tree_short",
+            "frame": {"x":606,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":606,"y":171,"w":101,"h":121},
+            "sourceSize": {"w":101,"h":171}
+        },
+        {
+            "filename": "speech_bubble",
+            "frame": {"x":707,"y":171,"w":101,"h":171},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":707,"y":171,"w":101,"h":121},
             "sourceSize": {"w":101,"h":171}
         }
     ]

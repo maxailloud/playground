@@ -6,6 +6,8 @@ PlanetCute.Boot = function(game) {
 PlanetCute.Boot.prototype = {
 
     preload: function() {
+        this.load.image('preloaderBackground', 'assets/interface/preloader_background.gif');
+        this.load.image('preloaderBar', 'assets/interface/preloader_bar.png');
     },
 
     create: function() {
