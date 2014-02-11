@@ -3,7 +3,6 @@ window.onload = function() {
 
     game.state.add('Boot',      PlanetCute.Boot);
     game.state.add('Preloader', PlanetCute.Preloader);
-    game.state.add('MainMenu',  PlanetCute.MainMenu);
     game.state.add('Game',      PlanetCute.Game);
 
     game.state.start('Boot');

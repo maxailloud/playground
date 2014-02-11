@@ -38,10 +38,6 @@ PlanetCute.Game.prototype = {
 
     render: function() {
         this.level.render();
-    },
-
-    quitGame: function(pointer) {
-        this.state.start('MainMenu');
     }
 
 };
