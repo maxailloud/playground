@@ -2,6 +2,7 @@ PlanetCute.Level = function(game) {
 
     this.game = game;
     this.background;
+    this.tiles;
 };
 
 PlanetCute.Level.prototype = {
@@ -53,6 +54,7 @@ PlanetCute.Level.prototype = {
 //        var tree_ugly = this.game.add.sprite(808, 171, 'world');
 //        tree_ugly.frameName = "tree_ugly";
 //        var rock = this.game.add.sprite(909, 171, 'world');
+//        rock.frameName = "rock";
 //
 //        var roof_west = this.game.add.sprite(0, 342, 'world');
 //        roof_west.frameName = "roof_west";
@@ -78,14 +80,65 @@ PlanetCute.Level.prototype = {
 //        var star = this.game.add.sprite(0, 513, 'world');
 //        star.frameName = "star";
 
-        var wood_block = this.game.add.sprite(200, 200, 'world');
-        wood_block.frameName = "wood_block";
-        var wood_block2 = this.game.add.sprite(200, 161, 'world');
-        wood_block2.frameName = "wood_block";
-        var wood_block3 = this.game.add.sprite(200, 121, 'world');
-        wood_block3.frameName = "wood_block";
-        var wood_block4 = this.game.add.sprite(200, 81, 'world');
-        wood_block4.frameName = "wood_block";
+        var layer1 = [
+            [null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null],
+            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block']
+        ];
+        var layer2 = [
+            [null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null],
+            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block']
+        ];
+        var layer3 = [
+            [null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null],
+            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
+            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
+            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
+            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
+            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock']
+        ];
+
+        this.tiles = this.game.add.group();
+
+        for (var lineIndex in layer1) {
+            var line = layer1[lineIndex];
+            for (var rowIndex in line) {
+                var row = line[rowIndex];
+                if (null != row) {
+                    this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90), 'world', row);
+                }
+            }
+        }
+
+        for (var lineIndex in layer2) {
+            var line = layer2[lineIndex];
+            for (var rowIndex in line) {
+                var row = line[rowIndex];
+                if (null != row) {
+                    this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - 40, 'world', row);
+                }
+            }
+        }
+
+        for (var lineIndex in layer3) {
+            var line = layer3[lineIndex];
+            for (var rowIndex in line) {
+                var row = line[rowIndex];
+                if (null != row) {
+                    this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - 80, 'world', row);
+                }
+            }
+        }
     },
 
     update: function() {

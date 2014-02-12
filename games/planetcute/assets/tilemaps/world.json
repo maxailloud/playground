@@ -154,10 +154,10 @@
         },
         {
             "filename": "rock",
-            "frame": {"x":808,"y":171,"w":101,"h":171},
+            "frame": {"x":909,"y":171,"w":101,"h":171},
             "rotated": false,
             "trimmed": false,
-            "spriteSourceSize": {"x":808,"y":171,"w":101,"h":171},
+            "spriteSourceSize": {"x":909,"y":171,"w":101,"h":171},
             "sourceSize": {"w":101,"h":171}
         },
         {
