@@ -1,5 +1,5 @@
 window.onload = function() {
-    var game = new Phaser.Game(707, 720, Phaser.AUTO, 'canvas-container');
+    var game = new Phaser.Game(707, 800, Phaser.AUTO, 'canvas-container');
 
     game.state.add('Boot',      PlanetCute.Boot);
     game.state.add('Preloader', PlanetCute.Preloader);

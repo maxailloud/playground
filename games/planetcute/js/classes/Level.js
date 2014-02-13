@@ -80,62 +80,80 @@ PlanetCute.Level.prototype = {
 //        var star = this.game.add.sprite(0, 513, 'world');
 //        star.frameName = "star";
 
-        var layer1 = [
-            [null, null, null, null, null, null, null],
-            [null, null, null, null, null, null, null],
-            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
-            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
-            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
-            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
-            ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block']
-        ];
-        var layer2 = [
-            [null, null, null, null, null, null, null],
-            [null, null, null, null, null, null, null],
-            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
-            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
-            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
-            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
-            ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block']
-        ];
-        var layer3 = [
-            [null, null, null, null, null, null, null],
-            [null, null, null, null, null, null, null],
-            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
-            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
-            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
-            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock'],
-            ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock']
+        var layers = [
+            [
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+                ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+                ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+                ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block'],
+                ['dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block', 'dirt_block']
+            ],
+            [
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+                ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+                ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+                ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block'],
+                ['grass_block', 'grass_block', 'grass_block', 'stone_block', 'stone_block', 'dirt_block', 'dirt_block']
+            ],
+            [
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                ['stone_block', 'water_block', 'water_block', 'plain_block', 'plain_block', 'plain_block', 'plain_block'],
+                ['stone_block', 'water_block', 'water_block', 'grass_block', 'stone_block', 'stone_block', 'stone_block'],
+                ['stone_block', 'water_block', 'water_block', 'stone_block', 'stone_block', 'stone_block', 'ramp_south'],
+                ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, null],
+                ['grass_block', 'water_block', 'water_block', 'grass_block', null, null, 'rock']
+            ],
+            [
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, 'wall_block', 'door_tall_closed', 'wall_block'],
+                ['ramp_west', 'stone_block', 'stone_block', 'stone_block', 'ramp_east', null, null],
+                [null, null, null, null, null, null, null],
+                ['tree_short', null, null, null, null, null, null],
+                [null, null, null, 'rock', null, null, null],
+            ],
+            [
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, 'wall_block', null, 'wall_block'],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+            ],
+            [
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, 'wall_block', null, 'wall_block'],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+                [null, null, null, null, null, null, null],
+            ]
         ];
 
         this.tiles = this.game.add.group();
 
-        for (var lineIndex in layer1) {
-            var line = layer1[lineIndex];
-            for (var rowIndex in line) {
-                var row = line[rowIndex];
-                if (null != row) {
-                    this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90), 'world', row);
-                }
-            }
-        }
-
-        for (var lineIndex in layer2) {
-            var line = layer2[lineIndex];
-            for (var rowIndex in line) {
-                var row = line[rowIndex];
-                if (null != row) {
-                    this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - 40, 'world', row);
-                }
-            }
-        }
-
-        for (var lineIndex in layer3) {
-            var line = layer3[lineIndex];
-            for (var rowIndex in line) {
-                var row = line[rowIndex];
-                if (null != row) {
-                    this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - 80, 'world', row);
+        for (var layerIndex in layers) {
+            var layer = layers[layerIndex];
+            for (var lineIndex in layer) {
+                var line = layer[lineIndex];
+                for (var rowIndex in line) {
+                    var row = line[rowIndex];
+                    if (null != row) {
+                        this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - (layerIndex * 40), 'world', row);
+                    }
                 }
             }
         }
