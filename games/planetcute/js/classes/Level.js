@@ -9,7 +9,7 @@ PlanetCute.Level.prototype = {
     create: function() {
         var gradientBackground = this.game.add.bitmapData(this.game.width, this.game.height)
         gradientBackground
-            .beginLinearGradientFill(["#79A8FF","#FFF"], [0, 1], 0, 0, 0, this.game.height)
+            .beginLinearGradientFill(["#79A8FF","#FFF"], [0, 1], 0, 0, 0, 200)
             .fillRect(0, 0, this.game.width, this.game.height);
 
         var background = this.game.add.sprite(0, 0, gradientBackground);
@@ -152,7 +152,10 @@ PlanetCute.Level.prototype = {
                 for (var rowIndex in line) {
                     var row = line[rowIndex];
                     if (null != row) {
-                        this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - (layerIndex * 40), 'world', row);
+                        var tile = this.tiles.create(rowIndex * 101, (lineIndex * 171) - (1 + lineIndex * 90) - (layerIndex * 40), 'world', row);
+                        tile.name = 'block' + layerIndex + lineIndex + rowIndex;
+                        tile.body.immovable = true;
+                        tile.body.moves = true;
                     }
                 }
             }

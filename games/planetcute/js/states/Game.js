@@ -20,24 +20,31 @@ PlanetCute.Game = function(game) {
     //But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
     this.level;
+    this.player;
 };
 
 PlanetCute.Game.prototype = {
 
     preload: function() {
         this.level  = new PlanetCute.Level(this.game);
+        this.player = new PlanetCute.Player(this.game);
     },
 
     create: function() {
         this.level.create();
+        this.player.create();
     },
 
     update: function() {
         this.level.update();
+        this.player.update();
+
+        this.physics.collide(this.player.sprite, this.level.tiles);
     },
 
     render: function() {
         this.level.render();
+        this.player.render();
     }
 
 };
