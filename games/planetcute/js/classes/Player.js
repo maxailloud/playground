@@ -8,7 +8,7 @@ PlanetCute.Player = function(game) {
 
 PlanetCute.Player.prototype = {
     create: function() {
-        this.sprite = this.game.add.sprite(32, 100, 'object');
+        this.sprite = this.game.add.sprite(350, 350, 'object');
         this.sprite.frameName = "character_boy";
 
         this.sprite.body.collideWorldBounds = true;

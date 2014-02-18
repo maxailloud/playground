@@ -39,7 +39,7 @@ PlanetCute.Game.prototype = {
         this.level.update();
         this.player.update();
 
-        this.physics.collide(this.player.sprite, this.level.tiles);
+        this.physics.collide(this.player.sprite, this.level.rockLayer);
     },
 
     render: function() {
