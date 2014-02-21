@@ -16,9 +16,6 @@ Chopper.Preloader.prototype = {
         this.load.audio('chopper_hovering', ['assets/audio/chopper_hovering.mp3']);
         this.load.image('missile', 'assets/sprites/shell.gif');
 
-        //MainMenu
-        this.load.spritesheet('playButton', 'assets/interface/button_sprite_sheet.png', 193, 71);
-
         //Level
         this.load.image('background', 'assets/sprites/background.jpg');
         this.load.tilemap('ground', 'assets/maps/ground.json', null, Phaser.Tilemap.TILED_JSON);
