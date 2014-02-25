@@ -1,7 +1,7 @@
 Multiplayer.Level = function(game) {
 
     this.game = game;
-    this.point;
+    this.circle;
 };
 
 Multiplayer.Level.prototype = {
@@ -10,18 +10,18 @@ Multiplayer.Level.prototype = {
 
         this.game.input.onDown.add(this.displayMousePosition, this);
 
-        this.point = new Phaser.Point(this.game.world.centerX, this.game.world.centerY);
+        this.circle = new Phaser.Circle(this.game.world.centerX, this.game.world.centerY, 32);
     },
 
     update: function() {
     },
 
     render: function() {
-        this.game.debug.renderPoint(this.point, 'red');
+        this.game.debug.renderCircle(this.circle, 'red');
     },
 
     displayMousePosition: function(pointer, event) {
-        this.point.x = pointer.x;
-        this.point.y = pointer.y;
+        this.circle.x = pointer.x;
+        this.circle.y = pointer.y;
     }
 };
