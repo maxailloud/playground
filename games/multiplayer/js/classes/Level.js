@@ -21,7 +21,14 @@ Multiplayer.Level.prototype = {
     },
 
     displayMousePosition: function(pointer, event) {
-        this.circle.x = pointer.x;
-        this.circle.y = pointer.y;
+        var newPosition = pointer.positionDown;
+
+        if (0 <= newPosition.x && this.game.world.width >= newPosition.x && 0 <= newPosition.y && this.game.world.height >= newPosition.y) {
+
+            this.circle.x = pointer.positionDown.x;
+            this.circle.y = pointer.positionDown.y;
+
+            this.game.socket.emit('click', { x: this.circle.x, y: this.circle.y });
+        }
     }
 };
