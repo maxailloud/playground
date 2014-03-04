@@ -1,8 +1,10 @@
 Multiplayer.Level = function(game) {
 
-    this.game     = game;
-    this.users    = null;
+    this.game      = game;
+    this.socket    = null;
+    this.users     = null;
     this.userIndex = null;
+    this.userId    = null;
 };
 
 Multiplayer.Level.prototype = {
@@ -12,24 +14,60 @@ Multiplayer.Level.prototype = {
         this.game.input.onDown.add(this.displayMousePosition, this);
 
         this.users     = this.game.add.group();
-        var user       = this.users.create(this.game.world.centerX, this.game.world.centerY, 'user');
-        this.userIndex = this.users.getIndex(user);
 
         var $this = this;
 
-        this.game.socket.on('display', function (data) {
-            $this.updateUser(data);
-        });
+        if (typeof io !== 'undefined') {
+            this.socket = io.connect('http://localhost:8080');
 
-        this.game.socket.on('newUser', function (data) {
-            $this.addUser(data);
-        });
+            this.socket.on('connecting', function() {
+                console.log('connecting');
+            });
+            this.socket.on('connect', function(data) {
+                console.log('connected');
+                $this.socket.emit('user:connected', {id: this.socket.sessionid });
+            });
+            this.socket.on('disconnect', function() {
+                console.log('disconnect');
+            });
+            this.socket.on('reconnecting', function() {
+                console.log('reconnecting');
+            });
+            this.socket.on('reconnect', function() {
+                console.log('reconnect');
+            });
+            this.socket.on('reconnecting', function() {
+                console.log('reconnecting');
+            });
+
+            this.socket.on('error', function(reason) {
+                console.error('Unable to connect server', reason);
+            });
+
+            this.socket.on('user:new', function (data) {
+                console.log('user:new');
+
+                $this.addUser(data);
+            });
+
+            this.socket.on('user:move', function (data) {
+                console.log('user:move');
+
+                $this.updateUser(data);
+            });
+        }
     },
 
     update: function() {
     },
 
     render: function() {
+    },
+
+    emit: function(event, data) {
+        if (null != this.socket) {
+            this.socket.emit(event, data);
+        }
     },
 
     displayMousePosition: function(pointer, event) {
@@ -41,16 +79,18 @@ Multiplayer.Level.prototype = {
             user.x = pointer.positionDown.x;
             user.y = pointer.positionDown.y;
 
-            this.game.socket.emit('click', { index: this.userIndex, x: pointer.positionDown.x, y: pointer.positionDown.y });
+            this.emit('user:move', { id: this.userId, x: pointer.positionDown.x, y: pointer.positionDown.y });
         }
     },
 
     addUser: function(data) {
-        var user = this.game.add.sprite(data.x, data.y, 'user');
-        var user = this.users.addAt(user, data.index);
+        var user       = this.users.create(data.x, data.y, 'user');
+        this.userIndex = this.users.getIndex(user);
+        this.userId    = this.socket.sessionid;
     },
 
     updateUser: function(data) {
+        console.log(data);
         var user = this.users.getAt(data.index);
         user.x = data.x;
         user.y = data.y;
