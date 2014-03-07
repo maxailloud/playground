@@ -1,6 +1,6 @@
 var io = require('socket.io').listen(8080);
 
-var users = [];
+var users = {};
 
 io.set('log level', 1);
 

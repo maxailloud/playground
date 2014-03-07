@@ -93,18 +93,19 @@ Multiplayer.Level.prototype = {
         this.userId           = data.id;
         this.users[data.id]   = {id: data.id, index: this.userIndex, x: data.x, y: data.y};
 
-        var $this = this;
         var user;
 
         console.log(data);
         console.log(data.users);
-        data.users.forEach(function(user) {
-            if ('undefined' === typeof $this.users[user.id]) {
-                var newUser  = $this.userSprites.create(user.x, user.y, 'user');
-                newUser.name = user.id;
-                $this.users[user.id] = {id: user.id, index: $this.userSprites.getIndex(newUser), x: user.x, y: user.y};
+        var receivedUsers = data.users;
+        for (var userId in receivedUsers) {
+            var user = receivedUsers[userId];
+            if ('undefined' === typeof this.users[userId]) {
+                var newUser  = this.userSprites.create(user.x, user.y, 'user');
+                newUser.name = userId;
+                this.users[userId] = {id: userId, index: this.userSprites.getIndex(newUser), x: user.x, y: user.y};
             }
-        });
+        }
     },
 
     userNew: function(data) {
