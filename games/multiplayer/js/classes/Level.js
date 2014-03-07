@@ -1,10 +1,11 @@
 Multiplayer.Level = function(game) {
 
-    this.game      = game;
-    this.socket    = null;
-    this.users     = null;
-    this.userIndex = null;
-    this.userId    = null;
+    this.game        = game;
+    this.socket      = null;
+    this.userSprites = null;
+    this.users       = [];
+    this.userIndex   = null;
+    this.userId      = null;
 };
 
 Multiplayer.Level.prototype = {
@@ -13,7 +14,7 @@ Multiplayer.Level.prototype = {
 
         this.game.input.onDown.add(this.displayMousePosition, this);
 
-        this.users = this.game.add.group();
+        this.userSprites = this.game.add.group();
 
         var $this = this;
 
@@ -77,7 +78,7 @@ Multiplayer.Level.prototype = {
 
         if (0 <= newPosition.x && this.game.world.width >= newPosition.x && 0 <= newPosition.y && this.game.world.height >= newPosition.y) {
 
-            var user = this.users.getAt(this.userIndex);
+            var user = this.userSprites.getAt(this.userIndex);
             user.x = pointer.positionDown.x;
             user.y = pointer.positionDown.y;
 
@@ -86,33 +87,39 @@ Multiplayer.Level.prototype = {
     },
 
     userConnected: function(data) {
-        var currentUser       = this.users.create(data.x, data.y, 'user');
+        var currentUser       = this.userSprites.create(data.x, data.y, 'user');
         currentUser.name      = data.id;
-        this.userIndex        = this.users.getIndex(currentUser);
+        this.userIndex        = this.userSprites.getIndex(currentUser);
         this.userId           = data.id;
+        this.users[data.id]   = {id: data.id, index: this.userIndex, x: data.x, y: data.y};
 
         var $this = this;
         var user;
+
+        console.log(data);
+        console.log(data.users);
         data.users.forEach(function(user) {
             if ('undefined' === typeof $this.users[user.id]) {
-                var newUser  = $this.users.create(user.x, user.y, 'user');
+                var newUser  = $this.userSprites.create(user.x, user.y, 'user');
                 newUser.name = user.id;
+                $this.users[user.id] = {id: user.id, index: $this.userSprites.getIndex(newUser), x: user.x, y: user.y};
             }
         });
     },
 
     userNew: function(data) {
-        var user = this.users.create(data.x, data.y, 'user');
-        user.name = data.id;
+        var newUser  = this.userSprites.create(data.x, data.y, 'user');
+        newUser.name = data.id;
+        this.users[data.id] = {id: data.id, index: this.userSprites.getIndex(newUser), x: data.x, y: data.y};
     },
 
     updateUser: function(data) {
-        console.log("update user position");
-        this.users.forEach(function(user) {
-            if (data.id === user.name) {
-                user.x = data.x;
-                user.y = data.y;
-            }
-        });
+        var updatedUser = this.users[data.id];
+        updatedUser.x = data.x;
+        updatedUser.y = data.y;
+
+        var updatedUserSprite = this.userSprites.getAt(updatedUser.index);
+        updatedUserSprite.x = data.x;
+        updatedUserSprite.y = data.y;
     }
 };

@@ -21,7 +21,7 @@ Multiplayer.Preloader.prototype = {
     },
 
     startGame: function() {
-        this.game.state.start('Game');
+        this.game.state.start('MainMenu');
     }
 
 };
