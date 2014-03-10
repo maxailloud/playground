@@ -12,6 +12,7 @@ Multiplayer.Preloader.prototype = {
         this.load.setPreloadSprite(this.loadingBar);
 
         this.game.load.image('user', 'assets/sprites/user.png');
+        this.game.load.image('bullet', 'assets/sprites/bullet.png');
     },
 
     create: function() {

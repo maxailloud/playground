@@ -6,6 +6,13 @@ Multiplayer.Level = function(game) {
     this.users       = [];
     this.userIndex   = null;
     this.userId      = null;
+    this.velocity    = 200;
+    this.cursors;
+    this.bullet;
+    this.bulletVelocity = 400;
+    this.bullets;
+    this.fireRate = 300;
+    this.fireTime = 0;
 };
 
 Multiplayer.Level.prototype = {
@@ -15,6 +22,12 @@ Multiplayer.Level.prototype = {
         this.game.input.onDown.add(this.displayMousePosition, this);
 
         this.userSprites = this.game.add.group();
+
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        this.bullets = this.game.add.group();
+        this.bullets.createMultiple(10, 'bullet');
+        this.bullets.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', this.resetBullet, this);
 
         var $this = this;
 
@@ -62,6 +75,35 @@ Multiplayer.Level.prototype = {
     },
 
     update: function() {
+        if (null != this.userIndex) {
+            var user = this.userSprites.getAt(this.userIndex);
+
+            user.body.velocity.x = 0;
+            user.body.velocity.y = 0;
+
+            if(this.cursors.left.isDown)
+            {
+                user.body.velocity.x = -this.velocity;
+            }
+            else if(this.cursors.right.isDown)
+            {
+                user.body.velocity.x = this.velocity;
+            }
+
+            if(this.cursors.up.isDown)
+            {
+                user.body.velocity.y = -this.velocity;
+            }
+            else if(this.cursors.down.isDown)
+            {
+                user.body.velocity.y = this.velocity;
+            }
+
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+            {
+                this.fire();
+            }
+        }
     },
 
     render: function() {
@@ -120,5 +162,25 @@ Multiplayer.Level.prototype = {
         var updatedUserSprite = this.userSprites.getAt(updatedUser.index);
         updatedUserSprite.x = data.x;
         updatedUserSprite.y = data.y;
+    },
+
+    fire: function() {
+        if (this.game.time.now > this.fireTime)
+        {
+            var user = this.userSprites.getAt(this.userIndex);
+            this.bullet = this.bullets.getFirstExists(false);
+
+            if (this.bullet)
+            {
+                this.bullet.reset(user.x + 25, user.y + 25);
+                this.bullet.body.velocity.x = +this.bulletVelocity;
+                this.bullet.rotation = 0.6;
+                this.fireTime = this.game.time.now + this.fireRate;
+            }
+        }
+    },
+
+    resetBullet: function(bullet) {
+        bullet.kill();
     }
 };
