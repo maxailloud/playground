@@ -95,8 +95,6 @@ Multiplayer.Level.prototype = {
 
         var user;
 
-        console.log(data);
-        console.log(data.users);
         var receivedUsers = data.users;
         for (var userId in receivedUsers) {
             var user = receivedUsers[userId];
