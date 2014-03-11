@@ -75,6 +75,8 @@ Multiplayer.Level.prototype = {
     },
 
     update: function() {
+        this.bullets.addAll('rotation', 0.1);
+
         if (null != this.userIndex) {
             var user = this.userSprites.getAt(this.userIndex);
 
@@ -174,7 +176,6 @@ Multiplayer.Level.prototype = {
             {
                 this.bullet.reset(user.x + 25, user.y + 25);
                 this.bullet.body.velocity.x = +this.bulletVelocity;
-                this.bullet.rotation = 0.6;
                 this.bullet.scale.setTo(0.5, 0.5);
                 this.fireTime = this.game.time.now + this.fireRate;
             }
