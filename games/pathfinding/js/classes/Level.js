@@ -16,7 +16,11 @@ Pathfinding.Level.prototype = {
     create: function() {
         this.map = this.game.add.tilemap('desert');
         this.map.addTilesetImage('Desert', 'tiles');
+        this.map.setCollisionBetween(1, 29);
+        this.map.setCollisionBetween(31, 48);
+
         this.layer = this.map.createLayer('Ground');
+        this.layer.debug = true;
         this.layer.resizeWorld();
 
         var walkables = [30];
@@ -57,13 +61,17 @@ Pathfinding.Level.prototype = {
             this.sprite.body.velocity.copyFrom(this.game.physics.velocityFromAngle(this.sprite.angle, 300));
         }
 
-        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * 32;
-        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * 32;
+        var newPosition = this.game.input.activePointer;
 
-        if (this.game.input.mousePointer.isDown)
-        {
-            this.blocked = true;
-            this.findPathTo(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y));
+        if (0 <= newPosition.worldX && this.game.world.width >= newPosition.worldX && 0 <= newPosition.worldY && this.game.world.height >= newPosition.worldY) {
+            this.marker.x = this.layer.getTileX(newPosition.worldX) * 32;
+            this.marker.y = this.layer.getTileY(newPosition.worldY) * 32;
+
+            if (this.game.input.mousePointer.isDown)
+            {
+                this.blocked = true;
+                this.findPathTo(this.layer.getTileX(this.marker.x), this.layer.getTileY(this.marker.y));
+            }
         }
     },
 
