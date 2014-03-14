@@ -10,6 +10,7 @@ Pathfinding.Level = function(game) {
     this.sprite;
     this.marker;
     this.blocked = false;
+    this.path = {};
 };
 
 Pathfinding.Level.prototype = {
@@ -80,10 +81,14 @@ Pathfinding.Level.prototype = {
 
     findPathTo: function(tileX, tileY) {
         var $this = this;
+        for(var index in this.path) {
+            this.map.putTile(30, this.path[index].x, this.path[index].y);
+        }
 
         this.pathfinder.setCallbackFunction(function(path) {
             path = path || [];
             for(var i = 0, ilen = path.length; i < ilen; i++) {
+                $this.path[i] = path[i];
                 $this.map.putTile(46, path[i].x, path[i].y);
             }
             $this.blocked = false;
