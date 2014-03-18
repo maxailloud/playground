@@ -15,6 +15,8 @@ Pathfinding.Level = function(game) {
 
 Pathfinding.Level.prototype = {
     create: function() {
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
         this.map = this.game.add.tilemap('desert');
         this.map.addTilesetImage('Desert', 'tiles');
         this.map.setCollisionBetween(1, 29);
@@ -31,6 +33,7 @@ Pathfinding.Level.prototype = {
 
         this.sprite = this.game.add.sprite(250, 250, 'car');
         this.sprite.anchor.setTo(0.5, 0.5);
+        this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.collideWorldBounds = true;
 
         this.game.camera.follow(this.sprite);
