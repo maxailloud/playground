@@ -20,7 +20,8 @@ Pathfinding.Level.prototype = {
         this.map = this.game.add.tilemap('desert');
         this.map.addTilesetImage('Desert', 'tiles');
         this.map.setCollisionBetween(1, 29);
-        this.map.setCollisionBetween(31, 48);
+        this.map.setCollisionBetween(31, 45);
+        this.map.setCollisionBetween(47, 48);
 
         this.layer = this.map.createLayer('Ground');
         this.layer.debug = true;
@@ -45,7 +46,7 @@ Pathfinding.Level.prototype = {
     },
 
     update: function() {
-        this.game.physics.collide(this.sprite, this.layer);
+        this.game.physics.arcade.collide(this.sprite, this.layer);
 
         this.sprite.body.velocity.x = 0;
         this.sprite.body.velocity.y = 0;
@@ -62,7 +63,7 @@ Pathfinding.Level.prototype = {
 
         if (this.cursors.up.isDown)
         {
-            this.sprite.body.velocity.copyFrom(this.game.physics.velocityFromAngle(this.sprite.angle, 300));
+            this.sprite.body.velocity.copyFrom(this.game.physics.arcade.velocityFromAngle(this.sprite.angle, 300));
         }
 
         var newPosition = this.game.input.activePointer;
