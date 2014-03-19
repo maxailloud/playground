@@ -2,7 +2,6 @@ Pathfinding.Level = function(game) {
 
     this.game = game;
     this.map;
-    this.tileset;
     this.layer;
     this.pathfinder;
 
