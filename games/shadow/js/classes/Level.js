@@ -8,16 +8,17 @@ Shadow.Level.prototype.create = function() {
     this.game.stage.backgroundColor = 0x4488cc;
 
     // Add the light
-    this.light = this.game.add.sprite(this.game.width/2, this.game.height/2, 'light');
+    this.light = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'light');
 
     // Set the pivot point of the light to the center of the texture
     this.light.anchor.setTo(0.5, 0.5);
 
     // Create a bitmap texture for drawing light cones
-    this.bitmap = this.game.add.bitmapData(this.game.width, this.game.height);
-    this.bitmap.context.fillStyle = 'rgb(255, 255, 255)';
+    this.bitmap                     = this.game.add.bitmapData(this.game.width, this.game.height);
+    this.bitmap.context.fillStyle   = 'rgb(255, 255, 255)';
     this.bitmap.context.strokeStyle = 'rgb(255, 255, 255)';
-    var lightBitmap = this.game.add.image(0, 0, this.bitmap);
+
+    var lightBitmap                 = this.game.add.image(0, 0, this.bitmap);
 
     // This bitmap is drawn onto the screen using the MULTIPLY blend mode.
     // Since this bitmap is over the background, dark areas of the bitmap
@@ -29,8 +30,8 @@ Shadow.Level.prototype.create = function() {
     lightBitmap.blendMode = Phaser.blendModes.MULTIPLY;
 
     // Create a bitmap for drawing rays
-    this.rayBitmap = this.game.add.bitmapData(this.game.width, this.game.height);
-    this.rayBitmapImage = this.game.add.image(0, 0, this.rayBitmap);
+    this.rayBitmap              = this.game.add.bitmapData(this.game.width, this.game.height);
+    this.rayBitmapImage         = this.game.add.image(0, 0, this.rayBitmap);
     this.rayBitmapImage.visible = false;
 
     // Setup function for hiding or showing rays
@@ -53,7 +54,7 @@ Shadow.Level.prototype.create = function() {
 
     // Show FPS
     this.game.time.advancedTiming = true;
-    this.fpsText = this.game.add.text(
+    this.fpsText                  = this.game.add.text(
         20, 20, '', { font: '16px Arial', fill: '#ffffff' }
     );
 };
