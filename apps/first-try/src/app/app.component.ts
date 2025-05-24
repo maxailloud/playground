@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PhaserGameComponent } from './phaser-game.component';
 
 @Component({
@@ -8,6 +8,7 @@ import { PhaserGameComponent } from './phaser-game.component';
     imports: [
         PhaserGameComponent,
     ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
 }

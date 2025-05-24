@@ -29,7 +29,14 @@ export default class PreloaderScene extends Scene {
         this.load.setPath('assets');
 
         this.load.image('logo', 'logo.png');
-        this.load.image('star', 'star.png');
+
+        if (window.devicePixelRatio >= 2) {
+            this.load.image('tower-defense', 'tower-defense-tilesheet@2.png');
+        } else {
+            this.load.image('tower-defense', 'tower-defense-tilesheet.png');
+        }
+
+        this.load.tilemapTiledJSON('level-1', 'level-1.json');
     }
 
     public create(): void {

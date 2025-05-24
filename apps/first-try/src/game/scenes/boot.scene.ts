@@ -5,11 +5,14 @@ export default class BootScene extends Scene {
     public static KEY = 'Boot';
 
     public constructor() {
-        super(BootScene.KEY);
-    }
-
-    public preload(): void {
-        this.load.image('background', 'assets/bg.png');
+        super({
+            key:BootScene.KEY,
+            pack: {
+                files: [
+                    { type: 'image', key: 'background', url: 'assets/bg.png' }
+                ],
+            }
+        });
     }
 
     public create(): void {
