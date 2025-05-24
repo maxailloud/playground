@@ -5,10 +5,7 @@ import { PhaserGameComponent } from './phaser-game.component';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
-    imports: [
-        PhaserGameComponent,
-    ],
+    imports: [PhaserGameComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-}
+export class AppComponent {}

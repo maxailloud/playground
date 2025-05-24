@@ -18,15 +18,9 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: window.innerWidth * window.devicePixelRatio,
-        height: window.innerHeight * window.devicePixelRatio
+        height: window.innerHeight * window.devicePixelRatio,
     },
-    scene: [
-        BootScene,
-        PreloaderScene,
-        MainMenuScene,
-        GameScene,
-        GameOverScene,
-    ],
+    scene: [BootScene, PreloaderScene, MainMenuScene, GameScene, GameOverScene],
 };
 
 export default gameConfig;

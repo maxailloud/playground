@@ -1,5 +1,5 @@
 {
-    "name": "first-try",
+    "name": "tower-defense",
     "dependencies": {
         "@capacitor/ios": "../../node_modules/@capacitor/ios",
         "@capacitor/android": "../../node_modules/@capacitor/android"

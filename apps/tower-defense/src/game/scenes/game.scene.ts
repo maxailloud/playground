@@ -20,7 +20,7 @@ export default class GameScene extends Scene {
         this.events.once('destroy', () => {
             this.gui.hide();
         });
-        this.events.once("shutdown", () => {
+        this.events.once('shutdown', () => {
             this.gui.hide();
         });
     }
@@ -102,7 +102,7 @@ export default class GameScene extends Scene {
                 down: cursors.down,
                 zoomIn: this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
                 zoomOut: this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-                speed: 0.5
+                speed: 0.5,
             };
 
             this.controls = new Phaser.Cameras.Controls.FixedKeyControl(fixedKeyControlConfig);

@@ -6,12 +6,10 @@ export default class BootScene extends Scene {
 
     public constructor() {
         super({
-            key:BootScene.KEY,
+            key: BootScene.KEY,
             pack: {
-                files: [
-                    { type: 'image', key: 'background', url: 'assets/bg.png' }
-                ],
-            }
+                files: [{ type: 'image', key: 'background', url: 'assets/bg.png' }],
+            },
         });
     }
 

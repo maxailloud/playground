@@ -20,10 +20,8 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "paths": {
-            "@game/*": [
-                "./apps/first-try/src/game/*"
-            ]
-        },
+            "@game/*": ["./apps/tower-defense/src/game/*"]
+        }
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,

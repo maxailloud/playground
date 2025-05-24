@@ -25,8 +25,7 @@ export default class MainMenuScene extends Scene {
                 align: 'center',
             })
             .setOrigin(0.5)
-            .setDepth(100)
-        ;
+            .setDepth(100);
         this.title
             .setInteractive(new Phaser.Geom.Rectangle(0, 0, this.title.width, this.title.height), Phaser.Geom.Rectangle.Contains)
             .on('pointerup', () => {
