@@ -29,7 +29,7 @@ export default class MainMenuScene extends Scene {
         ;
         this.title
             .setInteractive(new Phaser.Geom.Rectangle(0, 0, this.title.width, this.title.height), Phaser.Geom.Rectangle.Contains)
-            .on('pointerdown', () => {
+            .on('pointerup', () => {
                 this.scene.start(GameScene.KEY);
             });
     }
