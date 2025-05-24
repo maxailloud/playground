@@ -9,13 +9,12 @@ import GameScene from '@game/scenes/game.scene';
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const gameConfig: Phaser.Types.Core.GameConfig = {
     type: AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
     parent: 'game-container',
     backgroundColor: '#028AF8',
     scale: {
-        mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        mode: Phaser.Scale.FIT,
+        width: window.innerWidth * window.devicePixelRatio,
+        height: window.innerHeight * window.devicePixelRatio
     },
     scene: [
         BootScene,

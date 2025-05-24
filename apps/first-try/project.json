@@ -51,7 +51,15 @@
                     "sourceMap": true
                 }
             },
-            "defaultConfiguration": "production"
+            "defaultConfiguration": "production",
+            "dependsOn": [
+                {
+                    "projects": [
+                        "first-try"
+                    ],
+                    "target": "android-sync"
+                }
+            ]
         },
         "serve": {
             "continuous": true,
@@ -83,6 +91,10 @@
                 "staticFilePath": "dist/apps/first-try/browser",
                 "spa": true
             }
+        },
+        "android-sync": {
+            "command": "npm run android:sync first-try",
+            "continuous": true
         }
     }
 }
