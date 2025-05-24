@@ -9,10 +9,14 @@ import GameScene from '@game/scenes/game.scene';
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const gameConfig: Phaser.Types.Core.GameConfig = {
     type: AUTO,
-    parent: 'game-container',
     backgroundColor: '#028AF8',
+    url: 'http//url.to.game',
+    title: 'Tower Defense',
+    version: '0.0.1',
     scale: {
+        parent: 'game-container',
         mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
         width: window.innerWidth * window.devicePixelRatio,
         height: window.innerHeight * window.devicePixelRatio
     },
