@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import gameConfig from '@game/game-config';
-import { Game, Scene } from 'phaser';
+import { GameEventManager } from '@game/game-event-manager';
+import { Game } from 'phaser';
 
 @Injectable({
     providedIn: 'root',
@@ -8,16 +9,14 @@ import { Game, Scene } from 'phaser';
 export class GameService {
     private gameInstance?: Game;
 
-    public startGame(): void {
+    public currentScene = signal<Phaser.Scene|undefined>(undefined);
+    public currentKey = signal<string|undefined>(undefined);
+    public isTowerSelected = signal<boolean>(false);
+
+    public initialiseGame(): void {
         this.gameInstance = new Game(gameConfig);
-    }
 
-    public getGameInstance(): Game {
-        if (!this.gameInstance) {
-            throw new Error('Game not instantiated');
-        }
-
-        return this.gameInstance;
+        this.initialiseEvents();
     }
 
     public destroyGame(): void {
@@ -26,19 +25,26 @@ export class GameService {
         }
     }
 
-    public getCurrentScene(): Scene {
-        let currentScene: Scene | undefined;
+    public startGame(): void {
+        GameEventManager.emit('game-started');
+    }
 
-        for (const sceneKey in this.getGameInstance().scene.keys) {
-            if (this.getGameInstance().scene.keys[sceneKey].scene.isActive(sceneKey)) {
-                currentScene = this.getGameInstance().scene.keys[sceneKey];
-            }
-        }
+    public pauseWave(): void {
+        GameEventManager.emit('game-paused');
+    }
 
-        if (!currentScene) {
-            throw new Error('No current scene');
-        }
+    public setCurrentScene(key: string, scene: Phaser.Scene): void {
+        this.currentKey.set(key);
+        this.currentScene.set(scene);
+    }
 
-        return currentScene;
+    private initialiseEvents(): void {
+        GameEventManager.on('current-scene-ready', (data: { key: string, scene: Phaser.Scene }) => {
+            this.setCurrentScene(data.key, data.scene);
+        });
+
+        GameEventManager.on('tower-selected', (data: { tile: Phaser.Tilemaps.Tile }) => {
+            this.isTowerSelected.set(undefined !== data.tile);
+        });
     }
 }

@@ -5,6 +5,10 @@ import PreloaderScene from '@game/scenes/preloader.scene';
 import MainMenuScene from '@game/scenes/main-menu.scene';
 import GameScene from '@game/scenes/game.scene';
 
+console.log(window.devicePixelRatio);
+console.log(window.innerWidth * window.devicePixelRatio);
+console.log(window.innerHeight * window.devicePixelRatio);
+console.log((window.innerHeight * window.devicePixelRatio)-100);
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -13,14 +17,22 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     url: 'http//url.to.game',
     title: 'Tower Defense',
     version: '0.0.1',
+    pixelArt: true,
     scale: {
         parent: 'game-container',
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: window.innerWidth * window.devicePixelRatio,
-        height: window.innerHeight * window.devicePixelRatio,
+        width: 1024,
+        height: (window.innerHeight * window.devicePixelRatio) - 100,
     },
-    scene: [BootScene, PreloaderScene, MainMenuScene, GameScene, GameOverScene],
+    scene: [
+        BootScene,
+        PreloaderScene,
+        MainMenuScene,
+        GameScene,
+        GameOverScene,
+    ],
+    render: {
+        transparent: false,
+    },
 };
 
 export default gameConfig;

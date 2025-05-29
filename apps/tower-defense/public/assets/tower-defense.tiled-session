@@ -11,11 +11,22 @@
             "scale": 0.64,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 985.15625,
-                "y": 722.65625
+                "x": 997.65625,
+                "y": 766.40625
             }
         },
         "level-1.json#tower-defense-tilesheet": {
+            "scaleInDock": 1
+        },
+        "map.json": {
+            "scale": 0.433251953125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 841.3118449227998,
+                "y": 1088.2813028288065
+            }
+        },
+        "map.json#tower-defense-tilesheet": {
             "scaleInDock": 1
         },
         "tower-defense-tilesheet.tsx": {
@@ -28,9 +39,12 @@
         }
     },
     "last.imagePath": "/Users/max/workspace/playground/apps/tower-defense/public/assets",
+    "map.height": 32,
     "map.lastUsedFormat": "json",
+    "map.layerDataFormat": "1",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
+    "map.width": 16,
     "openFiles": [
         "level-1.json"
     ],
@@ -41,6 +55,7 @@
         "tower-defense-tilesheet.tsx"
     ],
     "resizeMap.removeObjects": true,
+    "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 64,

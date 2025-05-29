@@ -1,27 +1,30 @@
+import { GameEventManager } from '@game/game-event-manager';
 import GameOverScene from '@game/scenes/game-over.scene';
 import { Scene } from 'phaser';
-import * as dat from 'dat.gui';
 
 export default class GameScene extends Scene {
     public static KEY = 'Game';
 
     private camera!: Phaser.Cameras.Scene2D.Camera;
-    private background!: Phaser.GameObjects.Image;
-    private gameText!: Phaser.GameObjects.Text;
+    private gameOverText!: Phaser.GameObjects.Text;
     private map!: Phaser.Tilemaps.Tilemap;
     private controls!: Phaser.Cameras.Controls.FixedKeyControl;
-    private gui!: dat.GUI;
+
+    private towerLayer?: Phaser.Tilemaps.TilemapLayer | undefined;
+    private selectedTower?: Phaser.Tilemaps.Tile | undefined;
 
     public constructor() {
         super(GameScene.KEY);
     }
 
     public init(): void {
-        this.events.once('destroy', () => {
-            this.gui.hide();
+        GameEventManager.on('game-started', () => {
+            console.log('game started');
+            //const wave = this.waveCreator.createWave();
+            //wave.spawnEnemies(currentScene);
         });
-        this.events.once('shutdown', () => {
-            this.gui.hide();
+        GameEventManager.on('game-paused', () => {
+            console.log('game paused');
         });
     }
 
@@ -29,11 +32,8 @@ export default class GameScene extends Scene {
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x00ff00);
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
-
-        this.gameText = this.add
-            .text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
+        this.gameOverText = this.add
+            .text(512, 384, 'Game Over', {
                 fontFamily: 'Arial Black',
                 fontSize: 38,
                 color: '#FFFFFF',
@@ -43,83 +43,93 @@ export default class GameScene extends Scene {
             })
             .setOrigin(0.5)
             .setDepth(100);
-        this.gameText
-            .setInteractive(new Phaser.Geom.Rectangle(0, 0, this.gameText.width, this.gameText.height), Phaser.Geom.Rectangle.Contains)
+        this.gameOverText
+            .setInteractive(
+                new Phaser.Geom.Rectangle(0, 0, this.gameOverText.width, this.gameOverText.height),
+                Phaser.Geom.Rectangle.Contains,
+            )
             .on('pointerdown', () => {
                 this.scene.start(GameOverScene.KEY);
             });
 
-        this.map = this.add.tilemap('level-1');
+        this.map = this.add.tilemap('map');
 
         const tileset = this.map.addTilesetImage('tower-defense-tilesheet', 'tower-defense');
 
         if (tileset) {
-            // Parameters: layer name (or index) from Tiled, tileset, x, y
-            this.map.createLayer('Ground', tileset, 0, 0);
-            this.map.createLayer('Turrets', tileset, 0, 0);
+            const groundLayer = this.map.createLayer('Ground', tileset, 0, 0);
+
+            if (groundLayer) {
+                this.towerLayer = this.map.createLayer('Towers', tileset, 0, 0) ?? undefined;
+
+                this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer: Phaser.Input.Pointer) => {
+                    if (pointer.isDown) {
+                        this.camera.scrollX -= (pointer.x - pointer.prevPosition.x) / this.camera.zoom;
+                        this.camera.scrollY -= (pointer.y - pointer.prevPosition.y) / this.camera.zoom;
+                    }
+                });
+
+                this.input.on(
+                    Phaser.Input.Events.POINTER_WHEEL,
+                    (pointer: Phaser.Input.Pointer, target: Phaser.GameObjects.GameObject, deltaX: number, deltaY: number) => {
+                        this.camera.scrollY += deltaY;
+                    },
+                );
+
+                this.input.on(
+                    Phaser.Input.Events.POINTER_UP,
+                    (pointer: Phaser.Input.Pointer) => {
+                        const tile = this.map.getTileAtWorldXY(
+                            pointer.worldX,
+                            pointer.worldY,
+                            false,
+                            this.camera,
+                            this.towerLayer,
+                        );
+
+                        if (tile) {
+                            if (!this.selectedTower) {
+                                this.scale.resize(this.scale.width, this.scale.height - 100);
+                            }
+
+                            this.selectedTower = tile;
+
+                            GameEventManager.emit('tower-selected', { tile });
+                        } else {
+                            if (this.selectedTower) {
+                                this.scale.resize(this.scale.width, this.scale.height + 100);
+                            }
+
+                            this.selectedTower = undefined;
+
+                            GameEventManager.emit('tower-selected', { tile: undefined });
+                        }
+                    },
+                    this,
+                );
+
+                const cursors = this.input.keyboard?.createCursorKeys();
+
+                if (cursors) {
+                    this.camera.setZoom(1);
+                    this.camera.centerOn(this.map.widthInPixels, this.map.heightInPixels);
+                    this.camera.setBounds(0, 0, groundLayer.width, groundLayer.height);
+
+                    const fixedKeyControlConfig: Phaser.Types.Cameras.Controls.FixedKeyControlConfig = {
+                        camera: this.camera,
+                        left: cursors.left,
+                        right: cursors.right,
+                        up: cursors.up,
+                        down: cursors.down,
+                        speed: 0.5,
+                    };
+
+                    this.controls = new Phaser.Cameras.Controls.FixedKeyControl(fixedKeyControlConfig);
+                }
+            }
         }
 
-        this.input.on(
-            'wheel',
-            (pointer: Phaser.Input.Pointer, gameObjects: Phaser.GameObjects.GameObject, deltaX: number, deltaY: number) => {
-                if (deltaY > 0) {
-                    const newZoom = this.camera.zoom - 0.1;
-
-                    if (newZoom > 0.5) {
-                        this.camera.zoom = newZoom;
-                    }
-                }
-
-                if (deltaY < 0) {
-                    const newZoom = this.camera.zoom + 0.1;
-
-                    if (newZoom <= 1) {
-                        this.camera.zoom = newZoom;
-                    }
-                }
-            },
-        );
-
-        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-            if (!pointer.isDown) return;
-
-            this.camera.scrollX -= (pointer.x - pointer.prevPosition.x) / this.camera.zoom;
-            this.camera.scrollY -= (pointer.y - pointer.prevPosition.y) / this.camera.zoom;
-        });
-
-        const cursors = this.input.keyboard?.createCursorKeys();
-
-        if (cursors) {
-            this.camera.setZoom(1);
-            // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
-            this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-
-            const fixedKeyControlConfig: Phaser.Types.Cameras.Controls.FixedKeyControlConfig = {
-                camera: this.camera,
-                left: cursors.left,
-                right: cursors.right,
-                up: cursors.up,
-                down: cursors.down,
-                zoomIn: this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-                zoomOut: this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-                speed: 0.5,
-            };
-
-            this.controls = new Phaser.Cameras.Controls.FixedKeyControl(fixedKeyControlConfig);
-        }
-
-        this.gui = new dat.GUI();
-
-        const help = {
-            line1: 'Cursors to move',
-            line2: 'Q & E to zoom',
-        };
-
-        const cameraFolder = this.gui.addFolder('Camera');
-        cameraFolder.add(this.camera, 'zoom', 0.1, 2).step(0.1).listen();
-        cameraFolder.add(help, 'line1');
-        cameraFolder.add(help, 'line2');
-        cameraFolder.open();
+        GameEventManager.emit('current-scene-ready', {key: GameScene.KEY, scene: this});
     }
 
     public override update(time: number, delta: number): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { GameService } from './game.service';
+import { GameService } from '../game.service';
 
 @Component({
     selector: 'app-phaser-game',
@@ -9,7 +9,7 @@ export class PhaserGameComponent implements OnInit, OnDestroy {
     public gameService = inject(GameService);
 
     public ngOnInit(): void {
-        this.gameService.startGame();
+        this.gameService.initialiseGame();
     }
 
     public ngOnDestroy(): void {

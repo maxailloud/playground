@@ -1,1 +1,29 @@
-<app-phaser-game />
+<div class="container">
+    <header>
+        @if (currentSceneIsGameScene()) {
+            <span>Game scene</span>
+
+            @if (gameRunning()) {
+                <button type="button" (click)="pauseGame()">
+                    Pause
+                </button>
+            } @else {
+                <button type="button" (click)="startGame()">
+                    Start game
+                </button>
+            }
+        } @else {
+            <span>Not game scene</span>
+        }
+    </header>
+
+    <div class="content">
+        <app-phaser-game />
+    </div>
+
+    @if (isTowerSelected()) {
+        <footer>
+            <span>Tower menu</span>
+        </footer>
+    }
+</div>

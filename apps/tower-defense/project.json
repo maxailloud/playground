@@ -47,13 +47,7 @@
                     "sourceMap": true
                 }
             },
-            "defaultConfiguration": "production",
-            "dependsOn": [
-                {
-                    "projects": ["tower-defense"],
-                    "target": "android-sync"
-                }
-            ]
+            "defaultConfiguration": "production"
         },
         "serve": {
             "continuous": true,
@@ -87,8 +81,13 @@
             }
         },
         "android-sync": {
-            "command": "npm run android:sync tower-defense",
-            "continuous": true
+            "command": "npx nx run tower-defense:sync:android",
+            "dependsOn": [
+                {
+                    "projects": ["tower-defense"],
+                    "target": "build"
+                }
+            ]
         }
     }
 }

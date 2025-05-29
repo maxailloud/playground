@@ -1,0 +1,11 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    padding-top: max(env(safe-area-inset-top));
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
