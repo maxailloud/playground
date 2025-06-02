@@ -28,7 +28,7 @@ export default class PreloaderScene extends Scene {
     public preload(): void {
         this.load.setPath('assets');
         this.load.image('logo', 'logo.png');
-        this.load.image('tower-defense', 'tower-defense-tilesheet.png');
+        this.load.spritesheet('tower-defense', 'tower-defense-tilesheet.png', { frameWidth: 64, frameHeight: 64 });
         this.load.tilemapTiledJSON('map', 'map.json');
     }
 

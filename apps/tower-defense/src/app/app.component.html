@@ -5,13 +5,17 @@
 
             @if (gameRunning()) {
                 <button type="button" (click)="pauseGame()">
-                    Pause
+                    Pause game
                 </button>
             } @else {
                 <button type="button" (click)="startGame()">
                     Start game
                 </button>
             }
+
+            <button type="button" (click)="endGame()">
+                End game
+            </button>
         } @else {
             <span>Not game scene</span>
         }

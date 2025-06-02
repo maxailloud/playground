@@ -28,4 +28,8 @@ export class AppComponent {
         this.gameRunning.set(false);
         this.gameService.pauseWave();
     }
+
+    public endGame(): void {
+        this.gameService.endGame();
+    }
 }
