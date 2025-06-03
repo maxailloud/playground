@@ -5,6 +5,12 @@ import PreloaderScene from '@game/scenes/preloader.scene';
 import MainMenuScene from '@game/scenes/main-menu.scene';
 import GameScene from '@game/scenes/game.scene';
 
+console.log(window.devicePixelRatio);
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+console.log(window.innerWidth * window.devicePixelRatio);
+console.log(window.innerHeight * window.devicePixelRatio);
+console.log((window.innerHeight * window.devicePixelRatio)-100);
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -16,7 +22,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
     pixelArt: true,
     scale: {
         parent: 'game-container',
-        width: 1024,
+        width: 1024 > window.innerWidth ? window.innerWidth : 1024,
         height: window.innerHeight - 100,
     },
     scene: [

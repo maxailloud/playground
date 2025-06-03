@@ -33,6 +33,10 @@ export default class MainMenuScene extends Scene {
                 this.scene.start(GameScene.KEY);
             });
 
+        this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).on('up', () => {
+            this.scene.start(GameScene.KEY);
+        });
+
         GameEventManager.emit('current-scene-ready', { key: MainMenuScene.KEY, scene: this });
     }
 }
