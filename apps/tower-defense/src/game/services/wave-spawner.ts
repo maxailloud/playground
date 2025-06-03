@@ -1,20 +1,19 @@
+import Wave from '@game/entity/wave';
 import WaveConfig from '@game/entity/wave-config';
+import GameScene from '@game/scenes/game.scene';
 import EnemySpawner from '@game/services/enemy-spawner';
 import WaveCreator from '@game/services/wave-creator';
 
 export default class WaveSpawner {
-    private waveCreator!: WaveCreator;
-    private enemySpawner!: EnemySpawner;
+    private waveCreator: WaveCreator = new WaveCreator();
+    private enemySpawner: EnemySpawner = new EnemySpawner();
 
-    public constructor() {
-        this.waveCreator = new WaveCreator();
-        this.enemySpawner = new EnemySpawner();
-    }
+    public spawnWave(scene: GameScene, waveConfig: WaveConfig): Wave {
+        const wave = this.waveCreator.createWave(scene, waveConfig);
+        scene.setEnemies(wave.enemies);
 
-    public spawnWave(scene: Phaser.Scene, waveConfig: WaveConfig): void {
-        console.log('spawnWave', waveConfig);
+        this.enemySpawner.spawnEnemyFromWave(wave);
 
-        const wave = this.waveCreator.createWave(waveConfig);
-        this.enemySpawner.spawnEnemyFromWave(scene, wave);
+        return wave;
     }
 }

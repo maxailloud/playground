@@ -1,4 +1,4 @@
-import { GameEventManager } from '@game/game-event-manager';
+import GameEventManager from '@game/game-event-manager';
 import PreloaderScene from '@game/scenes/preloader.scene';
 import { Scene } from 'phaser';
 

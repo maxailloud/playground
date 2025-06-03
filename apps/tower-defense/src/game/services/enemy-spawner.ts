@@ -1,13 +1,21 @@
-import SpritesheetIndex from '@game/entity/spritesheet-index';
 import Wave from '@game/entity/wave';
 
 export default class EnemySpawner {
-    public spawnEnemyFromWave(scene: Phaser.Scene, wave: Wave): void {
-        console.log('spawnEnemyFromWave', wave.config);
+    public timerEvent!: Phaser.Time.TimerEvent;
 
-        void scene.add.sprite(50, 450, 'tower-defense', SpritesheetIndex.Infantry1);
-        void scene.add.sprite(100, 450, 'tower-defense', SpritesheetIndex.Infantry2);
-        void scene.add.sprite(150, 450, 'tower-defense', SpritesheetIndex.Infantry3);
-        void scene.add.sprite(200, 450, 'tower-defense', SpritesheetIndex.Infantry4);
+    public spawnEnemyFromWave(wave: Wave): void {
+        wave.enemies.forEach((enemy, index) => {
+            void wave.scene.time.addEvent({
+                delay: wave.config.interval * (index + 1),
+                callback: this.spawnEnemy,
+                args: [wave, enemy],
+                callbackScope: this,
+            });
+        });
+    }
+
+    public spawnEnemy(wave: Wave, enemy: Phaser.GameObjects.PathFollower): void {
+        wave.scene.add.existing(enemy);
+        enemy.startFollow(wave.config.speed);
     }
 }

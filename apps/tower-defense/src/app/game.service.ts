@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import gameConfig from '@game/game-config';
-import { GameEventManager } from '@game/game-event-manager';
+import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
 import { Game } from 'phaser';
 
