@@ -30,6 +30,7 @@ export default class PreloaderScene extends Scene {
         this.load.image('logo', 'logo.png');
         this.load.spritesheet('tower-defense', 'tower-defense-tilesheet.png', { frameWidth: 64, frameHeight: 64 });
         this.load.tilemapTiledJSON('map', 'map.json');
+        this.load.json('wave-config', 'wave-config.json');
     }
 
     public create(): void {

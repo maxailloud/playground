@@ -1,4 +1,4 @@
-import EnemyType from '@game/entity/enemy-type';
+import WaveConfig from '@game/entity/wave-config';
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
 import GameOverScene from '@game/scenes/game-over.scene';
@@ -13,6 +13,7 @@ export default class GameScene extends Scene {
     private controls!: Phaser.Cameras.Controls.FixedKeyControl;
 
     private waveSpawner!: WaveSpawner;
+    private waveConfig!: Pick<WaveConfig, 'interval' | 'speed' | 'enemies'>;
 
     private groundLayer?: Phaser.Tilemaps.TilemapLayer | undefined;
     private towerLayer?: Phaser.Tilemaps.TilemapLayer | undefined;
@@ -44,6 +45,7 @@ export default class GameScene extends Scene {
     }
 
     public create(): void {
+        this.waveConfig = this.cache.json.get('wave-config');
         this.waveSpawner = new WaveSpawner();
         this.camera = this.cameras.main;
         this.map = this.add.tilemap('map');
@@ -104,22 +106,11 @@ export default class GameScene extends Scene {
                 if (1 === progress) {
                     if (this.path && this.spawnPoint) {
                         void this.waveSpawner.spawnWave(this, {
-                            speed: 10000,
-                            interval: 500,
-                            enemies: [
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.Basic },
-                                { type: EnemyType.AdvancedInfantry },
-                                { type: EnemyType.EvolvedInfantry },
-                                { type: EnemyType.FuturisticInfantry },
-                            ],
-                            path: this.path,
-                            spawnPoint: { x: this.spawnPoint.x, y: this.spawnPoint.y },
+                            ...this.waveConfig,
+                            ...{
+                                path: this.path,
+                                spawnPoint: { x: this.spawnPoint.x, y: this.spawnPoint.y },
+                            }
                         });
                     }
                 }

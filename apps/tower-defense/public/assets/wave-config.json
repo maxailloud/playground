@@ -1,0 +1,36 @@
+{
+    "speed": 10000,
+    "interval": 500,
+    "enemies": [
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "advanced"
+        },
+        {
+            "type": "evolved"
+        },
+        {
+            "type": "futuristic"
+        }
+    ]
+}
