@@ -1,10 +1,10 @@
 import Wave from '@game/entity/wave';
 
 export default class EnemySpawner {
-    public timerEvent!: Phaser.Time.TimerEvent;
-
     public spawnEnemyFromWave(wave: Wave): void {
-        wave.enemies.forEach((enemy, index) => {
+        this.spawnEnemy(wave, wave.enemies[0]);
+        
+        wave.enemies.splice(1).forEach((enemy, index) => {
             void wave.scene.time.addEvent({
                 delay: wave.config.interval * (index + 1),
                 callback: this.spawnEnemy,
