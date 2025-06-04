@@ -1,6 +1,6 @@
 {
     "speed": 10000,
-    "interval": 500,
+    "interval": 1500,
     "enemies": [
         {
             "type": "basic"
