@@ -1,41 +1,32 @@
 import EnemyType from '@game/entity/enemy-type';
-import SpritesheetIndex from '@game/entity/spritesheet-index';
 import WaveConfig from '@game/entity/wave-config';
+import Enemy from '@game/entity/enemy';
+import AdvancedEnemy from '@game/prefabs/advanced-enemy';
+import BasicEnemy from '@game/prefabs/basic-enemy';
+import EvolvedEnemy from '@game/prefabs/evolved-enemy';
+import FuturisticEnemy from '@game/prefabs/futuristic-enemy';
+import GameScene from '@game/scenes/game.scene';
 
 export default class Wave {
-    public enemies: Phaser.GameObjects.PathFollower[] = [];
+    public enemies: Enemy[] = [];
 
-    public constructor(public scene: Phaser.Scene, public config: WaveConfig) {
+    public constructor(public scene: GameScene, public config: WaveConfig) {
         config.enemies.forEach((enemyConfig) => {
-            this.enemies.push(new Phaser.GameObjects.PathFollower(
-                scene,
-                config.path,
-                config.spawnPoint.x,
-                config.spawnPoint.y,
-                'tower-defense',
-                this.getSpritesheetIndexFromEnemyType(enemyConfig.type)
-            ));
+            const enemy = this.getEnemyPrefab(enemyConfig.type, scene, config.path, config.spawnPoint.x, config.spawnPoint.y);
+            this.enemies.push(enemy);
         });
     }
 
-    private getSpritesheetIndexFromEnemyType(enemyType: EnemyType): SpritesheetIndex {
-        let enemyTypeSpritesheetIndex: SpritesheetIndex = SpritesheetIndex.BasicInfantry;
-
+    private getEnemyPrefab(enemyType: EnemyType, scene: GameScene, path: Phaser.Curves.Path, x: number, y: number): Enemy {
         switch (enemyType) {
             case EnemyType.Basic:
-                enemyTypeSpritesheetIndex = SpritesheetIndex.BasicInfantry;
-                break;
+                return new BasicEnemy(scene, path, x, y);
             case EnemyType.AdvancedInfantry:
-                enemyTypeSpritesheetIndex = SpritesheetIndex.AdvancedInfantry;
-                break;
+                return new AdvancedEnemy(scene, path, x, y);
             case EnemyType.EvolvedInfantry:
-                enemyTypeSpritesheetIndex = SpritesheetIndex.EvolvedInfantry;
-                break;
+                return new EvolvedEnemy(scene, path, x, y);
             case EnemyType.FuturisticInfantry:
-                enemyTypeSpritesheetIndex = SpritesheetIndex.FuturisticInfantry;
-                break;
+                return new FuturisticEnemy(scene, path, x, y);
         }
-
-        return enemyTypeSpritesheetIndex;
     }
 }

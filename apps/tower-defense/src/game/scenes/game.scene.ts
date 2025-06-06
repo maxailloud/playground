@@ -1,6 +1,9 @@
+import AssetKey from '@game/entity/asset-key';
+import Tower from '@game/entity/tower';
 import WaveConfig from '@game/entity/wave-config';
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
+import CannonTower from '@game/prefabs/cannon-tower';
 import GameOverScene from '@game/scenes/game-over.scene';
 import WaveSpawner from '@game/services/wave-spawner';
 import { Scene } from 'phaser';
@@ -14,19 +17,27 @@ export default class GameScene extends Scene {
 
     private waveSpawner!: WaveSpawner;
     private waveConfig!: Pick<WaveConfig, 'interval' | 'speed' | 'enemies'>;
+    private towers: Tower[] = [];
 
-    private groundLayer?: Phaser.Tilemaps.TilemapLayer | undefined;
-    private towerLayer?: Phaser.Tilemaps.TilemapLayer | undefined;
-    private pointOfInterestLayer?: Phaser.Tilemaps.ObjectLayer | undefined;
-    private selectedTower?: Phaser.Tilemaps.Tile | undefined;
-    private spawnPoint?: Phaser.GameObjects.Rectangle | undefined;
-    private exitPoint?: Phaser.GameObjects.Rectangle | undefined;
-    private graphics?: Phaser.GameObjects.Graphics | undefined;
-    private path?: Phaser.Curves.Path | undefined;
-    private enemies?: Phaser.GameObjects.PathFollower[] = [];
+    public exitPoint!: Phaser.GameObjects.Rectangle;
+    public groundLayer!: Phaser.Tilemaps.TilemapLayer;
+    public towerLayer!: Phaser.Tilemaps.TilemapLayer;
+    public pointOfInterestLayer!: Phaser.Tilemaps.ObjectLayer;
+    public selectedTowerPosition?: Phaser.Tilemaps.Tile;
+    public spawnPoint!: Phaser.GameObjects.Rectangle;
+    public graphics!: Phaser.GameObjects.Graphics;
+    public path!: Phaser.Curves.Path;
+    public enemies: Phaser.GameObjects.PathFollower[] = [];
 
     public constructor() {
-        super(GameScene.KEY);
+        super({
+            key: GameScene.KEY,
+            physics: {
+                arcade: {
+                    debug: true,
+                },
+            },
+        });
     }
 
     public init(): void {
@@ -45,42 +56,39 @@ export default class GameScene extends Scene {
     }
 
     public create(): void {
-        this.waveConfig = this.cache.json.get('wave-config');
+        this.waveConfig = this.cache.json.get(AssetKey.WaveConfig);
         this.waveSpawner = new WaveSpawner();
         this.camera = this.cameras.main;
-        this.map = this.add.tilemap('map');
-        this.pointOfInterestLayer = this.map.getObjectLayer('point-of-interest') ?? undefined;
+        this.map = this.add.tilemap(AssetKey.Map);
+        this.pointOfInterestLayer = this.map.getObjectLayer(AssetKey.PointOfInterestObjectLayer) as Phaser.Tilemaps.ObjectLayer;
 
-        const tileset = this.map.addTilesetImage('tower-defense-tilesheet', 'tower-defense');
+        const tileset = this.map.addTilesetImage(AssetKey.TowerDefenseTilesheet, AssetKey.TowerDefenseSpritesheet);
 
         if (tileset) {
-            this.groundLayer = this.map.createLayer('Ground', tileset, 0, 0) ?? undefined;
+            this.groundLayer = this.map.createLayer(AssetKey.GroundMapLayer, tileset, 0, 0) as Phaser.Tilemaps.TilemapLayer;
+            this.towerLayer = this.map.createLayer(AssetKey.TowersMapLayer, tileset, 0, 0) as Phaser.Tilemaps.TilemapLayer;
 
-            if (this.groundLayer) {
-                this.towerLayer = this.map.createLayer('Towers', tileset, 0, 0) ?? undefined;
+            this.addPointOfInterestGameObject();
+            this.addEnemyPath();
+            this.addInputInScene();
 
-                this.addPointOfInterestGameObject();
-                this.addEnemyPath();
-                this.addInputInScene();
+            const cursors = this.input.keyboard?.createCursorKeys();
 
-                const cursors = this.input.keyboard?.createCursorKeys();
+            if (cursors) {
+                this.camera.setZoom(1);
+                this.camera.centerOn(this.map.widthInPixels, this.map.heightInPixels);
+                this.camera.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height);
 
-                if (cursors && this.groundLayer) {
-                    this.camera.setZoom(1);
-                    this.camera.centerOn(this.map.widthInPixels, this.map.heightInPixels);
-                    this.camera.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height);
+                const fixedKeyControlConfig: Phaser.Types.Cameras.Controls.FixedKeyControlConfig = {
+                    camera: this.camera,
+                    left: cursors.left,
+                    right: cursors.right,
+                    up: cursors.up,
+                    down: cursors.down,
+                    speed: 0.5,
+                };
 
-                    const fixedKeyControlConfig: Phaser.Types.Cameras.Controls.FixedKeyControlConfig = {
-                        camera: this.camera,
-                        left: cursors.left,
-                        right: cursors.right,
-                        up: cursors.up,
-                        down: cursors.down,
-                        speed: 0.5,
-                    };
-
-                    this.controls = new Phaser.Cameras.Controls.FixedKeyControl(fixedKeyControlConfig);
-                }
+                this.controls = new Phaser.Cameras.Controls.FixedKeyControl(fixedKeyControlConfig);
             }
         }
 
@@ -91,7 +99,7 @@ export default class GameScene extends Scene {
             this.path.draw(this.graphics, 4);
         }
 
-        GameEventManager.emit('current-scene-ready', { key: GameScene.KEY, scene: this });
+        GameEventManager.emit(GameEvents.CurrentSceneReady, { key: GameScene.KEY, scene: this });
     }
 
     public override update(time: number, delta: number): void {
@@ -101,74 +109,69 @@ export default class GameScene extends Scene {
     }
 
     private startGame(): void {
-        this.camera.pan(0, 0, undefined, undefined, undefined,
-            (camera: Phaser.Cameras.Scene2D.Camera, progress: number) => {
-                if (1 === progress) {
-                    if (this.path && this.spawnPoint) {
-                        void this.waveSpawner.spawnWave(this, {
-                            ...this.waveConfig,
-                            ...{
-                                path: this.path,
-                                spawnPoint: { x: this.spawnPoint.x, y: this.spawnPoint.y },
-                            }
-                        });
-                    }
-                }
+        this.camera.pan(0, 0, undefined, undefined, undefined, (camera: Phaser.Cameras.Scene2D.Camera, progress: number) => {
+            if (1 === progress) {
+                void this.waveSpawner.spawnWave(this, {
+                    ...this.waveConfig,
+                    ...{
+                        path: this.path,
+                        spawnPoint: { x: this.spawnPoint.x, y: this.spawnPoint.y },
+                    },
+                });
+            }
         });
     }
 
     private addPointOfInterestGameObject(): void {
-        if (this.pointOfInterestLayer) {
-            const spawnPoint = this.pointOfInterestLayer.objects.find((tileObject) => tileObject.name === 'spawn-point');
+        const spawnPoint = this.pointOfInterestLayer.objects.find((tileObject) => tileObject.name === 'spawn-point');
 
-            if (spawnPoint) {
-                const tile = this.groundLayer?.getTileAtWorldXY(spawnPoint.x ?? 0, spawnPoint.y ?? 0, false, this.camera);
+        if (spawnPoint) {
+            const tile = this.groundLayer?.getTileAtWorldXY(spawnPoint.x ?? 0, spawnPoint.y ?? 0, false, this.camera);
 
-                if (tile) {
-                    this.spawnPoint = this.add.rectangle(tile.getCenterX(), tile.getTop(), 64, 1, 0xffffff);
-                }
+            if (tile) {
+                this.spawnPoint = this.add.rectangle(tile.getCenterX(), tile.getTop(), 64, 1, 0xffffff);
             }
+        }
 
-            const exitPoint = this.pointOfInterestLayer.objects.find((tileObject) => tileObject.name === 'exit-point');
+        const exitPoint = this.pointOfInterestLayer.objects.find((tileObject) => tileObject.name === 'exit-point');
 
-            if (exitPoint) {
-                const tile = this.groundLayer?.getTileAtWorldXY(exitPoint.x ?? 0, exitPoint.y ?? 0, false, this.camera);
+        if (exitPoint) {
+            const tile = this.groundLayer?.getTileAtWorldXY(exitPoint.x ?? 0, exitPoint.y ?? 0, false, this.camera);
 
-                if (tile) {
-                    this.exitPoint = this.add.rectangle(tile.getCenterX(), tile.getBottom() - 1, 64, 1, 0xffffff);
-                }
+            if (tile) {
+                this.exitPoint = this.add.rectangle(tile.getCenterX(), tile.getBottom() - 1, 64, 1, 0xffffff);
+
+                this.physics.add.existing(this.exitPoint);
             }
         }
     }
 
     private addEnemyPath(): void {
-        if (this.pointOfInterestLayer && this.spawnPoint && this.exitPoint) {
-            const pathObject = this.pointOfInterestLayer.objects.find((tileObject) => tileObject.name === 'path');
+        const pathObject = this.pointOfInterestLayer.objects.find((tileObject) => tileObject.name === 'path');
 
-            if (pathObject && pathObject.polyline && 0 < pathObject.polyline.length) {
-                const path = this.add.path(this.spawnPoint.x ?? 0, this.spawnPoint.y ?? 0);
-                path.name = 'path';
+        if (pathObject && pathObject.polyline && 0 < pathObject.polyline.length) {
+            const path = this.add.path(this.spawnPoint.x ?? 0, this.spawnPoint.y ?? 0);
+            path.name = 'path';
 
-                this.add.circle(path.getStartPoint().x, path.getStartPoint().y, 10, 0xa83232);
+            this.add.circle(path.getStartPoint().x, path.getStartPoint().y, 10, 0xa83232);
 
-                const polylines = pathObject.polyline;
-                polylines.forEach((line) => {
-                    const tilePosition = path.getStartPoint().clone().add(new Phaser.Math.Vector2(line.x, line.y));
-                    const tile = this.groundLayer?.getTileAtWorldXY(tilePosition.x, tilePosition.y, false, this.camera);
+            const polylines = pathObject.polyline;
+            polylines.forEach((line) => {
+                const tilePosition = path.getStartPoint().clone().add(new Phaser.Math.Vector2(line.x, line.y));
+                const tile = this.groundLayer?.getTileAtWorldXY(tilePosition.x, tilePosition.y, false, this.camera);
 
-                    if (tile) {
-                        path.lineTo(new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY()));
-                        this.add.circle(tile.getCenterX(), tile.getCenterY(), 10, 0xa83232);
-                    } else {
-                        console.log('tile not found');
-                    }
-                });
+                if (tile) {
+                    path.lineTo(new Phaser.Math.Vector2(tile.getCenterX(), tile.getCenterY()));
+                    this.add.circle(tile.getCenterX(), tile.getCenterY(), 10, 0xa83232);
+                } else {
+                    console.log('tile not found');
+                }
+            });
 
-                path.lineTo(this.exitPoint.x, this.exitPoint.y);
-                this.add.circle(this.exitPoint.x, this.exitPoint.y, 10, 0xa83232);
+            path.lineTo(this.exitPoint.x, this.exitPoint.y);
+            this.add.circle(this.exitPoint.x, this.exitPoint.y, 10, 0xa83232);
 
-                this.path = path;
-            }
+            this.path = path;
         }
     }
 
@@ -193,22 +196,29 @@ export default class GameScene extends Scene {
                 const tile = this.towerLayer?.getTileAtWorldXY(pointer.worldX, pointer.worldY, false, this.camera);
 
                 if (tile) {
-                    if (!this.selectedTower) {
+                    if (!this.selectedTowerPosition) {
                         this.scale.resize(this.scale.width, this.scale.height - 100);
                     }
 
-                    this.selectedTower = tile;
+                    this.selectedTowerPosition = tile;
+
+                    // need to save the tower to be able to retrieve it later and not create a new one on top of it
+                    const cannonTower = new CannonTower(this, tile.getCenterX(), tile.getCenterY());
+                    this.add.existing(cannonTower);
+                    this.towers.push(cannonTower);
 
                     GameEventManager.emit('tower-selected', { tile });
                 } else {
-                    if (this.selectedTower) {
+                    if (this.selectedTowerPosition) {
                         this.scale.resize(this.scale.width, this.scale.height + 100);
                     }
 
-                    this.selectedTower = undefined;
+                    this.selectedTowerPosition = undefined;
 
                     GameEventManager.emit('tower-selected', { tile: undefined });
                 }
+
+                this.towers.forEach(tower => tower.shot());
             },
             this,
         );
@@ -216,5 +226,21 @@ export default class GameScene extends Scene {
 
     public setEnemies(enemies: Phaser.GameObjects.PathFollower[]): void {
         this.enemies = enemies;
+    }
+
+    public enemnyHasExitedMap(
+        enemy:
+            | Phaser.Types.Physics.Arcade.GameObjectWithBody
+            | Phaser.Physics.Arcade.Body
+            | Phaser.Physics.Arcade.StaticBody
+            | Phaser.Tilemaps.Tile,
+        exitPoint:
+            | Phaser.Types.Physics.Arcade.GameObjectWithBody
+            | Phaser.Physics.Arcade.Body
+            | Phaser.Physics.Arcade.StaticBody
+            | Phaser.Tilemaps.Tile,
+    ): void {
+        console.log('EnemnyExitsMap', enemy, exitPoint);
+        enemy.destroy();
     }
 }

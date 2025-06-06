@@ -1,4 +1,5 @@
 import GameEventManager from '@game/game-event-manager';
+import GameEvents from '@game/game-events';
 import PreloaderScene from '@game/scenes/preloader.scene';
 import { Scene } from 'phaser';
 
@@ -17,6 +18,6 @@ export default class BootScene extends Scene {
     public create(): void {
         this.scene.start(PreloaderScene.KEY);
 
-        GameEventManager.emit('current-scene-ready', { key: BootScene.KEY, scene: this });
+        GameEventManager.emit(GameEvents.CurrentSceneReady, { key: BootScene.KEY, scene: this });
     }
 }

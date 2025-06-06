@@ -1,3 +1,4 @@
+import AssetKey from '@game/entity/asset-key';
 import MainMenuScene from '@game/scenes/main-menu.scene';
 import { Scene } from 'phaser';
 
@@ -28,9 +29,9 @@ export default class PreloaderScene extends Scene {
     public preload(): void {
         this.load.setPath('assets');
         this.load.image('logo', 'logo.png');
-        this.load.spritesheet('tower-defense', 'tower-defense-tilesheet.png', { frameWidth: 64, frameHeight: 64 });
-        this.load.tilemapTiledJSON('map', 'map.json');
-        this.load.json('wave-config', 'wave-config.json');
+        this.load.spritesheet(AssetKey.TowerDefenseSpritesheet, 'tower-defense-tilesheet.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.tilemapTiledJSON(AssetKey.Map, 'map.json');
+        this.load.json(AssetKey.WaveConfig, 'wave-config.json');
     }
 
     public create(): void {

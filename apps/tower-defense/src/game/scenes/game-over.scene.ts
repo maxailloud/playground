@@ -1,4 +1,5 @@
 import GameEventManager from '@game/game-event-manager';
+import GameEvents from '@game/game-events';
 import MainMenuScene from '@game/scenes/main-menu.scene';
 import { Scene } from 'phaser';
 
@@ -40,6 +41,6 @@ export default class GameOverScene extends Scene {
                 this.scene.start(MainMenuScene.KEY);
             });
 
-        GameEventManager.emit('current-scene-ready', { key: GameOverScene.KEY, scene: this });
+        GameEventManager.emit(GameEvents.CurrentSceneReady, { key: GameOverScene.KEY, scene: this });
     }
 }

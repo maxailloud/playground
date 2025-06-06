@@ -44,7 +44,7 @@ export class GameService {
     }
 
     private initialiseEvents(): void {
-        GameEventManager.on('current-scene-ready', (data: { key: string, scene: Phaser.Scene }) => {
+        GameEventManager.on(GameEvents.CurrentSceneReady, (data: { key: string, scene: Phaser.Scene }) => {
             this.setCurrentScene(data.key, data.scene);
         });
 

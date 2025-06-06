@@ -1,9 +1,10 @@
+import Enemy from '@game/entity/enemy';
 import Wave from '@game/entity/wave';
 
 export default class EnemySpawner {
     public spawnEnemyFromWave(wave: Wave): void {
         this.spawnEnemy(wave, wave.enemies[0]);
-        
+
         wave.enemies.splice(1).forEach((enemy, index) => {
             void wave.scene.time.addEvent({
                 delay: wave.config.interval * (index + 1),
@@ -14,8 +15,8 @@ export default class EnemySpawner {
         });
     }
 
-    public spawnEnemy(wave: Wave, enemy: Phaser.GameObjects.PathFollower): void {
+    public spawnEnemy(wave: Wave, enemy: Enemy): void {
         wave.scene.add.existing(enemy);
-        enemy.startFollow(wave.config.speed);
+        enemy.startFollow(enemy.speed);
     }
 }
