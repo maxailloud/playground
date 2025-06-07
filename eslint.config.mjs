@@ -55,7 +55,18 @@ export default [
             "@typescript-eslint/explicit-module-boundary-types": "error",
             "@typescript-eslint/explicit-function-return-type": "error",
             "@typescript-eslint/array-type": "off",
-            "@typescript-eslint/no-unused-vars": "error",
+            "@typescript-eslint/no-unused-vars": [
+                "error",
+                {
+                    "args": "all",
+                    "argsIgnorePattern": "^_",
+                    "caughtErrors": "all",
+                    "caughtErrorsIgnorePattern": "^_",
+                    "destructuredArrayIgnorePattern": "^_",
+                    "varsIgnorePattern": "^_",
+                    "ignoreRestSiblings": true
+                }
+            ],
             "@typescript-eslint/no-use-before-define": "error",
             "@typescript-eslint/consistent-type-definitions": "error",
             "@typescript-eslint/explicit-member-accessibility": "error",
