@@ -18,5 +18,6 @@ export default class EnemySpawner {
     public spawnEnemy(wave: Wave, enemy: Enemy): void {
         wave.scene.add.existing(enemy);
         enemy.startFollow(enemy.speed);
+        wave.scene.updateTowersRange();
     }
 }

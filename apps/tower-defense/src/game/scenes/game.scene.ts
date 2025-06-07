@@ -1,4 +1,5 @@
 import AssetKey from '@game/entity/asset-key';
+import Enemy from '@game/entity/enemy';
 import Tower from '@game/entity/tower';
 import WaveConfig from '@game/entity/wave-config';
 import GameEventManager from '@game/game-event-manager';
@@ -17,7 +18,8 @@ export default class GameScene extends Scene {
 
     private waveSpawner!: WaveSpawner;
     private waveConfig!: Pick<WaveConfig, 'interval' | 'speed' | 'enemies'>;
-    private towers: Tower[] = [];
+    public towers: Tower[] = [];
+    public enemies: Enemy[] = [];
 
     public exitPoint!: Phaser.GameObjects.Rectangle;
     public groundLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -27,7 +29,6 @@ export default class GameScene extends Scene {
     public spawnPoint!: Phaser.GameObjects.Rectangle;
     public graphics!: Phaser.GameObjects.Graphics;
     public path!: Phaser.Curves.Path;
-    public enemies: Phaser.GameObjects.PathFollower[] = [];
 
     public constructor() {
         super({
@@ -102,14 +103,14 @@ export default class GameScene extends Scene {
         GameEventManager.emit(GameEvents.CurrentSceneReady, { key: GameScene.KEY, scene: this });
     }
 
-    public override update(time: number, delta: number): void {
+    public override update(_time: number, delta: number): void {
         if (this.controls) {
             this.controls.update(delta);
         }
     }
 
     private startGame(): void {
-        this.camera.pan(0, 0, undefined, undefined, undefined, (camera: Phaser.Cameras.Scene2D.Camera, progress: number) => {
+        this.camera.pan(0, 0, undefined, undefined, undefined, (_camera: Phaser.Cameras.Scene2D.Camera, progress: number) => {
             if (1 === progress) {
                 void this.waveSpawner.spawnWave(this, {
                     ...this.waveConfig,
@@ -185,7 +186,7 @@ export default class GameScene extends Scene {
 
         this.input.on(
             Phaser.Input.Events.POINTER_WHEEL,
-            (pointer: Phaser.Input.Pointer, target: Phaser.GameObjects.GameObject, deltaX: number, deltaY: number) => {
+            (_pointer: Phaser.Input.Pointer, _target: Phaser.GameObjects.GameObject, _deltaX: number, deltaY: number) => {
                 this.camera.scrollY += deltaY;
             },
         );
@@ -224,11 +225,11 @@ export default class GameScene extends Scene {
         );
     }
 
-    public setEnemies(enemies: Phaser.GameObjects.PathFollower[]): void {
+    public setEnemies(enemies: Enemy[]): void {
         this.enemies = enemies;
     }
 
-    public enemnyHasExitedMap(
+    public enemyHasExitedMap(
         enemy:
             | Phaser.Types.Physics.Arcade.GameObjectWithBody
             | Phaser.Physics.Arcade.Body
@@ -240,7 +241,28 @@ export default class GameScene extends Scene {
             | Phaser.Physics.Arcade.StaticBody
             | Phaser.Tilemaps.Tile,
     ): void {
-        console.log('EnemnyExitsMap', enemy, exitPoint);
+        console.log('EnemyExitsMap', enemy, exitPoint);
         enemy.destroy();
+    }
+
+    public updateTowersRange(): void {
+        console.log('updateTowersRange');
+
+        this.towers.map(tower => tower.updateRange());
+    }
+
+    public enemyHasEnteredTowerRange(
+        enemy:
+            | Phaser.Types.Physics.Arcade.GameObjectWithBody
+            | Phaser.Physics.Arcade.Body
+            | Phaser.Physics.Arcade.StaticBody
+            | Phaser.Tilemaps.Tile,
+        exitPoint:
+            | Phaser.Types.Physics.Arcade.GameObjectWithBody
+            | Phaser.Physics.Arcade.Body
+            | Phaser.Physics.Arcade.StaticBody
+            | Phaser.Tilemaps.Tile,
+    ): void {
+        console.log('enemyHasEnteredTowerRange', enemy, exitPoint);
     }
 }

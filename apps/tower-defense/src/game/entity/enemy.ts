@@ -18,8 +18,20 @@ export default abstract class Enemy extends Phaser.GameObjects.PathFollower impl
         super(scene, path, x, y, AssetKey.TowerDefenseSpritesheet, frame);
 
         scene.physics.add.existing(this);
-        (this.body as Phaser.Physics.Arcade.Body).setSize(32, 32);
+        scene.physics.add.overlap(this, scene.exitPoint, scene.enemyHasExitedMap);
 
-        scene.physics.add.collider(this, scene.exitPoint, scene.enemnyHasExitedMap);
+        (this.body as Phaser.Physics.Arcade.Body).setCircle(16, 16, 16);
+        (this.body as Phaser.Physics.Arcade.Body).debugBodyColor = 0x0099ff;
+
+    }
+
+    public override preUpdate(time: number, delta: number): void {
+        super.preUpdate(time, delta);
+
+        console.log((this.body as Phaser.Physics.Arcade.Body).overlapR);
+
+        if (0 < (this.body as Phaser.Physics.Arcade.Body).overlapR) {
+            console.log('enemy overlapping with something');
+        }
     }
 }
