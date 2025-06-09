@@ -1,8 +1,8 @@
 import AssetKey from '@game/entity/asset-key';
 import MainMenuScene from '@game/scenes/main-menu.scene';
-import { Scene } from 'phaser';
+import Phaser from 'phaser';
 
-export default class PreloaderScene extends Scene {
+export default class PreloaderScene extends Phaser.Scene {
     public static KEY = 'Preloader';
 
     public constructor() {

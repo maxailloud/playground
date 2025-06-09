@@ -1,14 +1,14 @@
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
 import GameScene from '@game/scenes/game.scene';
-import { GameObjects, Scene } from 'phaser';
+import Phaser from 'phaser';
 
-export default class MainMenuScene extends Scene {
+export default class MainMenuScene extends Phaser.Scene {
     public static KEY = 'MainMenu';
 
-    private background!: GameObjects.Image;
-    private logo!: GameObjects.Image;
-    private title!: GameObjects.Text;
+    private background!: Phaser.GameObjects.Image;
+    private logo!: Phaser.GameObjects.Image;
+    private title!: Phaser.GameObjects.Text;
 
     public constructor() {
         super(MainMenuScene.KEY);

@@ -1,4 +1,4 @@
-import { AUTO } from 'phaser';
+import Phaser from 'phaser';
 import BootScene from '@game/scenes/boot.scene';
 import GameOverScene from '@game/scenes/game-over.scene';
 import PreloaderScene from '@game/scenes/preloader.scene';
@@ -14,7 +14,7 @@ console.log((window.innerHeight * window.devicePixelRatio)-100);
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const gameConfig: Phaser.Types.Core.GameConfig = {
-    type: AUTO,
+    type: Phaser.AUTO,
     backgroundColor: '0x00ff00',
     url: 'http//url.to.game',
     title: 'Tower Defense',

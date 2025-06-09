@@ -7,9 +7,9 @@ import GameEvents from '@game/game-events';
 import CannonTower from '@game/prefabs/cannon-tower';
 import GameOverScene from '@game/scenes/game-over.scene';
 import WaveSpawner from '@game/services/wave-spawner';
-import { Scene } from 'phaser';
+import Phaser from 'phaser';
 
-export default class GameScene extends Scene {
+export default class GameScene extends Phaser.Scene {
     public static KEY = 'Game';
 
     private camera!: Phaser.Cameras.Scene2D.Camera;
@@ -219,7 +219,7 @@ export default class GameScene extends Scene {
                     GameEventManager.emit('tower-selected', { tile: undefined });
                 }
 
-                this.towers.forEach(tower => tower.shot());
+                this.towers.forEach((tower) => tower.shot());
             },
             this,
         );
@@ -242,13 +242,13 @@ export default class GameScene extends Scene {
             | Phaser.Tilemaps.Tile,
     ): void {
         console.log('EnemyExitsMap', enemy, exitPoint);
-        enemy.destroy();
+        // remove hp from player
     }
 
     public updateTowersRange(): void {
         console.log('updateTowersRange');
 
-        this.towers.map(tower => tower.updateRange());
+        this.towers.map((tower) => tower.updateRange());
     }
 
     public enemyHasEnteredTowerRange(

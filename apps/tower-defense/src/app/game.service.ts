@@ -2,20 +2,20 @@ import { Injectable, signal } from '@angular/core';
 import gameConfig from '@game/game-config';
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
-import { Game } from 'phaser';
+import Phaser from 'phaser';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GameService {
-    private gameInstance?: Game;
+    private gameInstance?: Phaser.Game;
 
     public currentScene = signal<Phaser.Scene|undefined>(undefined);
     public currentKey = signal<string|undefined>(undefined);
     public isTowerSelected = signal<boolean>(false);
 
     public initialiseGame(): void {
-        this.gameInstance = new Game(gameConfig);
+        this.gameInstance = new Phaser.Game(gameConfig);
 
         this.initialiseEvents();
     }

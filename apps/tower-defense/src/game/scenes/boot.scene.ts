@@ -1,16 +1,16 @@
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
 import PreloaderScene from '@game/scenes/preloader.scene';
-import { Scene } from 'phaser';
+import Phaser from 'phaser';
 
-export default class BootScene extends Scene {
+export default class BootScene extends Phaser.Scene {
     public static KEY = 'Boot';
 
     public constructor() {
         super({
             key: BootScene.KEY,
             pack: {
-                files: [{ type: 'image', key: 'background', url: 'assets/bg.png' }],
+                files: [{ type: 'image', cache: false, key: 'background', url: 'assets/bg.png' }],
             },
         });
     }

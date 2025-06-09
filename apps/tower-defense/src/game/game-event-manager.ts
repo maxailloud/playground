@@ -1,5 +1,5 @@
-import { Events } from 'phaser';
+import Phaser from 'phaser';
 
-const GameEventManager = new Events.EventEmitter();
+const GameEventManager = new Phaser.Events.EventEmitter();
 
 export default GameEventManager;

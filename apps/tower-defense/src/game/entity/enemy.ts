@@ -8,21 +8,18 @@ export default abstract class Enemy extends Phaser.GameObjects.PathFollower impl
     public maxHealth = 3;
     public health = this.maxHealth;
 
-    protected constructor(
-        scene: GameScene,
-        path: Phaser.Curves.Path,
-        x: number,
-        y: number,
-        frame?: string | number,
-    ) {
+    protected constructor(scene: GameScene, path: Phaser.Curves.Path, x: number, y: number, frame?: string | number) {
         super(scene, path, x, y, AssetKey.TowerDefenseSpritesheet, frame);
 
         scene.physics.add.existing(this);
-        scene.physics.add.overlap(this, scene.exitPoint, scene.enemyHasExitedMap);
+        scene.physics.add.overlap(
+            this.body as Phaser.Physics.Arcade.Body,
+            scene.exitPoint.body as Phaser.Physics.Arcade.Body,
+            scene.enemyHasExitedMap,
+        );
 
         (this.body as Phaser.Physics.Arcade.Body).setCircle(16, 16, 16);
         (this.body as Phaser.Physics.Arcade.Body).debugBodyColor = 0x0099ff;
-
     }
 
     public override preUpdate(time: number, delta: number): void {

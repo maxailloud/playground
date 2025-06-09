@@ -1,9 +1,9 @@
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
 import MainMenuScene from '@game/scenes/main-menu.scene';
-import { Scene } from 'phaser';
+import Phaser from 'phaser';
 
-export default class GameOverScene extends Scene {
+export default class GameOverScene extends Phaser.Scene {
     public static KEY = 'GameOver';
 
     private camera!: Phaser.Cameras.Scene2D.Camera;

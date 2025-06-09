@@ -16,8 +16,13 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
         this.scene.physics.add.existing(this.rangeGameObject, false);
         (this.rangeGameObject.body as Phaser.Physics.Arcade.Body).setCircle(this.range);
 
-        this.scene.enemies
-            .forEach((enemy) => this.scene.physics.add.overlap(this, enemy, this.scene.enemyHasEnteredTowerRange));
+        this.scene.enemies.forEach((enemy) =>
+            this.scene.physics.add.overlap(
+                this.body as Phaser.Physics.Arcade.Body,
+                enemy.body as Phaser.Physics.Arcade.Body,
+                this.scene.enemyHasEnteredTowerRange,
+            ),
+        );
     }
 
     public override preUpdate(_time: number, _delta: number): void {
@@ -28,7 +33,11 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
         console.log('tower - updateRange');
 
         this.scene.enemies.forEach((enemy) =>
-            this.scene.physics.add.overlap(this.rangeGameObject, enemy, this.scene.enemyHasEnteredTowerRange),
+            this.scene.physics.add.overlap(
+                this.rangeGameObject.body as Phaser.Physics.Arcade.Body,
+                enemy.body as Phaser.Physics.Arcade.Body,
+                this.scene.enemyHasEnteredTowerRange,
+            ),
         );
     }
 
