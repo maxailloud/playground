@@ -18,7 +18,7 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
 
         this.scene.enemies.forEach((enemy) =>
             this.scene.physics.add.overlap(
-                this.body as Phaser.Physics.Arcade.Body,
+                this.rangeGameObject.body as Phaser.Physics.Arcade.Body,
                 enemy.body as Phaser.Physics.Arcade.Body,
                 this.scene.enemyHasEnteredTowerRange,
             ),
@@ -29,9 +29,7 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
         this.rotation += 0.01;
     }
 
-    public updateRange(): void {
-        console.log('tower - updateRange');
-
+    public updateEnemies(): void {
         this.scene.enemies.forEach((enemy) =>
             this.scene.physics.add.overlap(
                 this.rangeGameObject.body as Phaser.Physics.Arcade.Body,

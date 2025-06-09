@@ -248,7 +248,7 @@ export default class GameScene extends Phaser.Scene {
     public updateTowersRange(): void {
         console.log('updateTowersRange');
 
-        this.towers.map((tower) => tower.updateRange());
+        this.towers.map((tower) => tower.updateEnemies());
     }
 
     public enemyHasEnteredTowerRange(
