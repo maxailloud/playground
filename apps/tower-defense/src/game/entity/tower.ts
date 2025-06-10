@@ -2,6 +2,7 @@ import Range from '@game/components/range.component';
 import AssetKey from '@game/entity/asset-key';
 import SpritesheetIndex from '@game/entity/spritesheet-index';
 import GameScene from '@game/scenes/game.scene';
+import Phaser from 'phaser';
 
 export default abstract class Tower extends Phaser.GameObjects.Sprite implements Range {
     public rangeGameObject: Phaser.GameObjects.Arc;
@@ -20,7 +21,7 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
             this.scene.physics.add.overlap(
                 this.rangeGameObject.body as Phaser.Physics.Arcade.Body,
                 enemy.body as Phaser.Physics.Arcade.Body,
-                this.scene.enemyHasEnteredTowerRange,
+                this.enemyHasEnteredTowerRange,
             ),
         );
     }
@@ -34,9 +35,24 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
             this.scene.physics.add.overlap(
                 this.rangeGameObject.body as Phaser.Physics.Arcade.Body,
                 enemy.body as Phaser.Physics.Arcade.Body,
-                this.scene.enemyHasEnteredTowerRange,
+                this.enemyHasEnteredTowerRange,
             ),
         );
+    }
+
+    public enemyHasEnteredTowerRange(
+        enemy:
+            | Phaser.Types.Physics.Arcade.GameObjectWithBody
+            | Phaser.Physics.Arcade.Body
+            | Phaser.Physics.Arcade.StaticBody
+            | Phaser.Tilemaps.Tile,
+        exitPoint:
+            | Phaser.Types.Physics.Arcade.GameObjectWithBody
+            | Phaser.Physics.Arcade.Body
+            | Phaser.Physics.Arcade.StaticBody
+            | Phaser.Tilemaps.Tile,
+    ): void {
+        console.log('enemyHasEnteredTowerRange', enemy, exitPoint);
     }
 
     public abstract shot(): void;
