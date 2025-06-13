@@ -25,6 +25,7 @@
         "@types/dat.gui": "^0.7.13",
         "phaser": "^4.0.0-rc.4",
         "rxjs": "~7.8.0",
+        "ulid": "^3.0.1",
         "zone.js": "~0.15.0"
     },
     "devDependencies": {

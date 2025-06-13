@@ -229,22 +229,6 @@ export default class GameScene extends Phaser.Scene {
         this.enemies = enemies;
     }
 
-    public enemyHasExitedMap(
-        enemy:
-            | Phaser.Types.Physics.Arcade.GameObjectWithBody
-            | Phaser.Physics.Arcade.Body
-            | Phaser.Physics.Arcade.StaticBody
-            | Phaser.Tilemaps.Tile,
-        exitPoint:
-            | Phaser.Types.Physics.Arcade.GameObjectWithBody
-            | Phaser.Physics.Arcade.Body
-            | Phaser.Physics.Arcade.StaticBody
-            | Phaser.Tilemaps.Tile,
-    ): void {
-        console.log('EnemyExitsMap', enemy, exitPoint);
-        // remove hp from player
-    }
-
     public updateTowersRange(): void {
         console.log('updateTowersRange');
 
