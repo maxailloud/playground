@@ -8,12 +8,12 @@ import FuturisticEnemy from '@game/prefabs/futuristic-enemy';
 import GameScene from '@game/scenes/game.scene';
 
 export default class Wave {
-    public enemies: Enemy[] = [];
+    public enemies: Map<string, Enemy> = new Map([]);
 
     public constructor(public scene: GameScene, public config: WaveConfig) {
         config.enemies.forEach((enemyConfig) => {
             const enemy = this.getEnemyPrefab(enemyConfig.type, scene, config.path, config.spawnPoint.x, config.spawnPoint.y);
-            this.enemies.push(enemy);
+            this.enemies.set(enemy.id, enemy);
         });
     }
 

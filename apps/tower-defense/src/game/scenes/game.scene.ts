@@ -1,6 +1,7 @@
 import AssetKey from '@game/entity/asset-key';
 import Enemy from '@game/entity/enemy';
 import Tower from '@game/entity/tower';
+import Wave from '@game/entity/wave';
 import WaveConfig from '@game/entity/wave-config';
 import GameEventManager from '@game/game-event-manager';
 import GameEvents from '@game/game-events';
@@ -16,10 +17,11 @@ export default class GameScene extends Phaser.Scene {
     private map!: Phaser.Tilemaps.Tilemap;
     private controls!: Phaser.Cameras.Controls.FixedKeyControl;
 
+    private wave!: Wave;
     private waveSpawner!: WaveSpawner;
     private waveConfig!: Pick<WaveConfig, 'interval' | 'speed' | 'enemies'>;
-    public towers: Tower[] = [];
-    public enemies: Enemy[] = [];
+    public towers: Map<string, Tower> = new Map([]);
+    public enemies: Map<string, Enemy> = new Map([]);
 
     public exitPoint!: Phaser.GameObjects.Rectangle;
     public groundLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -107,18 +109,30 @@ export default class GameScene extends Phaser.Scene {
         if (this.controls) {
             this.controls.update(delta);
         }
+
+        this.enemies.forEach(enemy => {
+            this.towers.forEach(tower => {
+                if (tower.enemyIsInRange(enemy)) {
+                    tower.addEnemyInRange(enemy);
+                } else {
+                    tower.removeEnemyInRange(enemy);
+                }
+            })
+        })
     }
 
     private startGame(): void {
         this.camera.pan(0, 0, undefined, undefined, undefined, (_camera: Phaser.Cameras.Scene2D.Camera, progress: number) => {
             if (1 === progress) {
-                void this.waveSpawner.spawnWave(this, {
+                this.wave = this.waveSpawner.spawnWave(this, {
                     ...this.waveConfig,
                     ...{
                         path: this.path,
                         spawnPoint: { x: this.spawnPoint.x, y: this.spawnPoint.y },
                     },
                 });
+
+                this.enemies = new Map(this.wave.enemies);
             }
         });
     }
@@ -206,7 +220,7 @@ export default class GameScene extends Phaser.Scene {
                     // need to save the tower to be able to retrieve it later and not create a new one on top of it
                     const cannonTower = new CannonTower(this, tile.getCenterX(), tile.getCenterY());
                     this.add.existing(cannonTower);
-                    this.towers.push(cannonTower);
+                    this.towers.set(cannonTower.id, cannonTower);
 
                     GameEventManager.emit('tower-selected', { tile });
                 } else {
@@ -218,20 +232,8 @@ export default class GameScene extends Phaser.Scene {
 
                     GameEventManager.emit('tower-selected', { tile: undefined });
                 }
-
-                this.towers.forEach((tower) => tower.shot());
             },
             this,
         );
-    }
-
-    public setEnemies(enemies: Enemy[]): void {
-        this.enemies = enemies;
-    }
-
-    public updateTowersRange(): void {
-        console.log('updateTowersRange');
-
-        this.towers.map((tower) => tower.updateEnemies());
     }
 }

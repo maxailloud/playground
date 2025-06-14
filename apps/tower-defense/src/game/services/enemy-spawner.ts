@@ -3,27 +3,33 @@ import Wave from '@game/entity/wave';
 
 export default class EnemySpawner {
     public spawnEnemyFromWave(wave: Wave): void {
-        this.spawnEnemy(wave, wave.enemies[0]);
+        let enemyCount = 0;
 
-        wave.enemies.splice(1).forEach((enemy, index) => {
-            void wave.scene.time.addEvent({
-                delay: wave.config.interval * (index + 1),
-                callback: this.spawnEnemy,
-                args: [wave, enemy],
-                callbackScope: this,
-            });
+        wave.enemies.forEach((enemy) => {
+            if (0 === enemyCount) {
+                this.spawnEnemy(wave, enemy);
+            } else {
+                void wave.scene.time.addEvent({
+                    delay: wave.config.interval * (enemyCount + 1),
+                    callback: this.spawnEnemy,
+                    args: [wave, enemy],
+                    callbackScope: this,
+                });
+            }
+
+            enemyCount++;
         });
     }
 
     public spawnEnemy(wave: Wave, enemy: Enemy): void {
         wave.scene.add.existing(enemy);
-        enemy.startFollow(enemy.speed);
+
         enemy.startFollow({
             duration: enemy.speed,
             onComplete: () => {
+                console.log('enemy finished following');
                 enemy.destroy();
             }
         });
-        wave.scene.updateTowersRange();
     }
 }
