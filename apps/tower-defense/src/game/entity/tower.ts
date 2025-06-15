@@ -10,11 +10,12 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
     public id = ulid();
     public rangeGameObject: Phaser.GameObjects.Arc;
     public range = 250;
-    public inRangeEnemies = new Map();
+    public inRangeEnemies = new Map<string, Enemy>();
 
     protected constructor(public override scene: GameScene, x: number, y: number, frame?: string | number) {
         super(scene, x, y, AssetKey.TowerDefenseSpritesheet, frame);
 
+        this.rotation = 0;
         this.setOrigin(0.5, 0.65);
 
         this.scene.add.sprite(x, y, AssetKey.TowerDefenseSpritesheet, SpritesheetIndex.BaseTower);
@@ -26,6 +27,8 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
         (this.rangeGameObject.body as Phaser.Physics.Arcade.Body).setCircle(this.range);
     }
 
+    public abstract shot(enemy: Enemy): void;
+
     public enemyIsInRange(enemy: Enemy): boolean {
         return this.scene.physics.overlap(
             enemy as Phaser.Types.Physics.Arcade.GameObjectWithBody,
@@ -34,15 +37,29 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
     }
 
     public override preUpdate(_time: number, _delta: number): void {
-        this.rotation += 0.01;
+        //this.rotation += 0.01;
 
-        this.inRangeEnemies.forEach((enemy) => {
-            console.log('lets shoot that one', enemy.id);
-            this.shot(enemy);
-        });
+        if (1 === this.inRangeEnemies.size) {
+            const inRangeEnemy = this.inRangeEnemies.values().next().value;
+
+            if (inRangeEnemy) {
+                this.rotateTowardsEnemy(inRangeEnemy);
+                this.shot(inRangeEnemy);
+            }
+        } else {
+            this.inRangeEnemies.forEach((enemy) => {
+                console.log('lets shoot that one', enemy.id);
+                this.rotateTowardsEnemy(enemy);
+                this.shot(enemy);
+            });
+        }
     }
 
-    public abstract shot(enemy: Enemy): void;
+    private rotateTowardsEnemy(enemy: Enemy): void {
+        const angleBetweenTowerAndEnemy = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+        const ninetyFiveDegreeInRadiant  = Phaser.Math.DegToRad(90);
+        this.rotation = angleBetweenTowerAndEnemy + ninetyFiveDegreeInRadiant;
+    }
 
     public addEnemyInRange(enemy: Enemy): void {
         if (!this.inRangeEnemies.has(enemy.id)) {

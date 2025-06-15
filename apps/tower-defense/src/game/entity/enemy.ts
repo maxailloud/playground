@@ -28,7 +28,6 @@ export default abstract class Enemy extends Phaser.GameObjects.PathFollower impl
             this.scene.exitPoint as Phaser.Types.Physics.Arcade.GameObjectWithStaticBody,
         )) {
             console.log('EnemyExitsMap', this, this.scene.exitPoint);
-            this.destroy();
             this.scene.enemies.delete(this.id);
         }
     }
