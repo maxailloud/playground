@@ -37,8 +37,6 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
     }
 
     public override preUpdate(_time: number, _delta: number): void {
-        //this.rotation += 0.01;
-
         if (1 === this.inRangeEnemies.size) {
             const inRangeEnemy = this.inRangeEnemies.values().next().value;
 
