@@ -8,7 +8,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         super(scene, x, y, AssetKey.TowerDefenseSpritesheet, frame);
     }
 
-    public override preUpdate(time: number, delta: number): void {
+    public override preUpdate(_time: number, _delta: number): void {
         console.log('bullet preUpdate');
         this.scene.physics.moveToObject(this.target, this, 100);
     }
