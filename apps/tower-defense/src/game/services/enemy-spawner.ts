@@ -27,7 +27,6 @@ export default class EnemySpawner {
         enemy.startFollow({
             duration: enemy.speed,
             onComplete: () => {
-                console.log('enemy finished following');
                 enemy.destroy();
             }
         });

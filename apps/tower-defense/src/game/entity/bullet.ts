@@ -1,3 +1,4 @@
+import Damage from '@game/components/damage.component';
 import Speed from '@game/components/speed.component';
 import AssetKey from '@game/entity/asset-key';
 import Enemy from '@game/entity/enemy';
@@ -5,8 +6,9 @@ import SpritesheetIndex from '@game/entity/spritesheet-index';
 import GameScene from '@game/scenes/game.scene';
 import Phaser from 'phaser';
 
-export default class Bullet extends Phaser.GameObjects.Sprite implements Speed {
+export default class Bullet extends Phaser.GameObjects.Sprite implements Speed, Damage {
     public speed = 450;
+    public damage = 1;
     public isTracking = false;
 
     public constructor(scene: GameScene, x: number, y: number, frame: SpritesheetIndex, public target: Enemy) {
@@ -32,8 +34,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite implements Speed {
             this as Phaser.Types.Physics.Arcade.GameObjectWithBody,
             this.target as Phaser.Types.Physics.Arcade.GameObjectWithStaticBody,
         )) {
-            console.log('Enemy got hit by bullet', this, this.target);
-            // enemy should lose health
+            this.target.loseHealth(this.damage);
             this.destroy();
         }
     }

@@ -58,6 +58,7 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
                 this.shootingSpeedBuffer += delta;
             }
         } else {
+            // TODO: should shoot only the closest, not all of them
             this.inRangeEnemies.forEach((enemy) => {
                 console.log('lets shoot that one', enemy.id);
                 this.rotateTowardsEnemy(enemy);

@@ -31,4 +31,12 @@ export default abstract class Enemy extends Phaser.GameObjects.PathFollower impl
             this.scene.enemies.delete(this.id);
         }
     }
+
+    public loseHealth(damage: number): void {
+        this.health -= damage;
+
+        if (0 === this.health) {
+            this.destroy();
+        }
+    }
 }
