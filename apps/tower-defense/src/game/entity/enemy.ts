@@ -16,7 +16,7 @@ export default abstract class Enemy extends Phaser.GameObjects.PathFollower impl
 
         scene.physics.add.existing(this);
 
-        (this.body as Phaser.Physics.Arcade.Body).setCircle(16, 16, 16);
+        (this.body as Phaser.Physics.Arcade.Body).setCircle(14, 18, 18);
         (this.body as Phaser.Physics.Arcade.Body).debugBodyColor = 0x0099ff;
     }
 
