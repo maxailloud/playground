@@ -4,6 +4,33 @@
     "enemies": [
         {
             "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "basic"
+        },
+        {
+            "type": "advanced"
+        },
+        {
+            "type": "evolved"
+        },
+        {
+            "type": "futuristic"
         }
     ]
 }

@@ -39,38 +39,43 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
     }
 
     public override preUpdate(_time: number, delta: number): void {
-        if (1 === this.inRangeEnemies.size) {
-            const inRangeEnemy = this.inRangeEnemies.values().next().value;
+        if (0 < this.inRangeEnemies.size) {
+            let enemyToAttack: Enemy | undefined;
 
-            if (inRangeEnemy) {
-                this.rotateTowardsEnemy(inRangeEnemy);
+            if (1 === this.inRangeEnemies.size) {
+                enemyToAttack = this.inRangeEnemies.values().next().value as Enemy;
+            } else {
+                const inRangeEnemiesIterator = this.inRangeEnemies.values();
+                let closestEnemy = inRangeEnemiesIterator.next().value as Enemy;
+                let closestEnemyDistance = Phaser.Math.Distance.Between(this.x, this.y, closestEnemy.x, closestEnemy.y);
 
-                if (this.shootingSpeedBuffer >= this.shootingSpeed) {
-                    this.shootingSpeedBuffer = 0;
-                    console.log('shootingSpeedBuffer = 0');
+                for (const enemy of inRangeEnemiesIterator[Symbol.iterator]()) {
+                    const enemyDistance = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
+
+                    if (enemyDistance < closestEnemyDistance) {
+                        closestEnemyDistance = enemyDistance;
+                        closestEnemy = enemy;
+                    }
                 }
 
-                if (this.shootingSpeedBuffer === 0) {
-                    this.shoot(inRangeEnemy);
-                    console.log('lets shoot');
-                }
-
-                this.shootingSpeedBuffer += delta;
+                enemyToAttack = closestEnemy;
             }
-        } else {
-            // TODO: should shoot only the closest, not all of them
-            this.inRangeEnemies.forEach((enemy) => {
-                console.log('lets shoot that one', enemy.id);
-                this.rotateTowardsEnemy(enemy);
-                this.shoot(enemy);
-            });
+
+            this.rotateTowardsEnemy(enemyToAttack);
+
+            if (this.shootingSpeedBuffer >= this.shootingSpeed) {
+                this.shootingSpeedBuffer = 0;
+            }
+
+            if (this.shootingSpeedBuffer === 0) {
+                this.shoot(enemyToAttack);
+            }
+
+            this.shootingSpeedBuffer += delta;
         }
     }
 
     private shoot(enemy: Enemy): void {
-        console.log('shoot');
-
-        console.log(this.scene, this.x, this.y, SpritesheetIndex.BasicBullet, enemy);
         const bullet = new Bullet(this.scene as GameScene, this.x, this.y, SpritesheetIndex.BasicBullet, enemy);
         this.scene.add.existing(bullet);
     }
@@ -83,14 +88,12 @@ export default abstract class Tower extends Phaser.GameObjects.Sprite implements
 
     public addEnemyInRange(enemy: Enemy): void {
         if (!this.inRangeEnemies.has(enemy.id)) {
-            console.log('add enemy to in range');
             this.inRangeEnemies.set(enemy.id, enemy);
         }
     }
 
     public removeEnemyInRange(enemy: Enemy): void {
         if (this.inRangeEnemies.has(enemy.id)) {
-            console.log('remove enemy to in range');
             this.inRangeEnemies.delete(enemy.id);
         }
     }
